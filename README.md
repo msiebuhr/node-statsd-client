@@ -42,3 +42,9 @@ Mainly:
 
  * No support for samping yet (the `|@0.1`-stuff).
  * Creates a socket for EACH measurement.
+
+LICENSE
+-------
+
+ISC - see
+[LICENSE.txt](https://github.com/msiebuhr/node-statsd-client/blob/master/LICENSE.txt).
