@@ -12,7 +12,8 @@ Initialization:
 		sdc = new SDC('your-statsd-server);
 
 The client can also be initialized with options, such as `debug` (off by
-default) and `port` (default 8125).
+default), `port` (default 8125) and `socket_timeout` for when an unused socket
+is closed (default 1000 ms).
 
 Counting stuff:
 
@@ -41,7 +42,6 @@ Check the [GitHub issues](https://github.com/msiebuhr/node-statsd-client/issues)
 Mainly:
 
  * No support for samping yet (the `|@0.1`-stuff).
- * Creates a socket for EACH measurement.
 
 LICENSE
 -------
