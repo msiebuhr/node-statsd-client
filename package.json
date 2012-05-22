@@ -1,0 +1,18 @@
+{
+  "author": "Morten Siebuhr <sbhr@sbhr.dk>",
+  "name": "statsd-client",
+  "description": "Client for statsd",
+  "version": "0.0.0",
+  "homepage": "https://github.com/msiebuhr/node-statsd-client",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/msiebuhr/node-statsd-client.git"
+  },
+  "main": "lib/statsd-client.js",
+  "dependencies": {},
+  "devDependencies": {},
+  "optionalDependencies": {},
+  "engines": {
+    "node": "*"
+  }
+}
