@@ -12,7 +12,7 @@ Quick init:
 
 The client can also be initialized with options, such as `debug` (off by
 default), `port` (default 8125) and `socket_timeout` for when an unused socket
-is closed (default 1000 ms), ex:
+is closed (default 1000 ms; set to `0` to disable it), ex:
 
     var SDC = require('statsd-client'),
         sdc = new SDC('statsd.example.com', {port: 8124, debug: true});
@@ -55,9 +55,9 @@ By default, the socket is closed if it hasn't been used for a second (the `socke
 	}, 100 * Math.random());
     sdc.close(); // 1 - Closes socket early.
 
-The call is idempotent, so you can call it "just to be sure". And if you use it
-again, the socket will automatically be created again, and a new timeout-timer
-started.
+The call is idempotent, so you can call it "just to be sure". And if you submit
+new metrics later, the socket will automatically be re-created, and a new
+timeout-timer started.
 
 What's broken
 -------------
