@@ -1,9 +1,11 @@
 {
   "author": "Morten Siebuhr <sbhr@sbhr.dk>",
   "name": "statsd-client",
-  "description": "Client for statsd",
+  "description": "Yet another client for Etsy's statsd",
+  "keywords": ["statsd", "client", "metrics", "udp"],
   "version": "0.0.0",
   "homepage": "https://github.com/msiebuhr/node-statsd-client",
+  "bugs": "https://github.com/msiebuhr/node-statsd-client/issues",
   "repository": {
     "type": "git",
     "url": "git://github.com/msiebuhr/node-statsd-client.git"
