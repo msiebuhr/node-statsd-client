@@ -44,6 +44,21 @@ Keep track of how fast (or slow) your stuff is:
 If it is given a `Date`, it will calculate the difference, and anything else
 will be passed straight through.
 
+### Stopping
+
+By default, the socket is closed if it hasn't been used for a second (the `socket_timeout` in the init-options), but it can also be force-closed with `.close()`:
+
+	var start = new Date();
+	setTimeout(function () {
+		sdc.timing('random.timeout', start); // 2 - implicitly re-creates socket.
+		sdc.close(); // 3 - Closes socket after last use.
+	}, 100 * Math.random());
+    sdc.close(); // 1 - Closes socket early.
+
+The call is idempotent, so you can call it "just to be sure". And if you use it
+again, the socket will automatically be created again, and a new timeout-timer
+started.
+
 What's broken
 -------------
 
