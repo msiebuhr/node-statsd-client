@@ -3,19 +3,33 @@ node-statsd-client
 
 Node.js client for [statsd](https://github.com/etsy/statsd).
 
-API
----
-
-Quick init:
+Quick tour
+----------
 
     var sdc = new require('statsd-client')('statsd.example.com');
 
-The client can also be initialized with options, such as `debug` (off by
-default), `port` (default 8125) and `socket_timeout` for when an unused socket
-is closed (default 1000 ms; set to `0` to disable it), ex:
+	var timer = new Date();
+	sdc.increment('some.counter'); // Increment by one.
+	sdc.gauge('some.gauge', 10); // Set gauge to 10
+	sdc.timing('some.timer', timer); // Calculates time diff
+
+	sdc.close(); // Optional - stop now
+
+API
+---
+
+### Initialization
 
     var SDC = require('statsd-client'),
         sdc = new SDC('statsd.example.com', {port: 8124, debug: true});
+
+Available options:
+
+ * `debug` (default off): print what is being sent to stderr.
+ * `socket_timeout` (default 1000 ms): How long to wait before auto-closing the
+   socket (it will be re-opened on demand). Set to zero to disable auto-closing.
+ * `port` (default 8125): Port to contact the statsd-daemon on.
+ * `prefix` (default ""): Prefix all stats with this value.
 
 ### Counting stuff:
 
