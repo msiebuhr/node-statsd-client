@@ -33,12 +33,17 @@ Available options:
 
 ### Counting stuff:
 
-Counters are supported, both as raw `.counter(metric, delta)` and with the
+Counters are supported, both as raw `.counter(metric, delta, sampling)` and with the
 shortcuts `.increment(metric, [delta=1])` and `.decrement(metric, [delta=-1])`:
 
     sdc.increment('systemname.subsystem.value'); // Increment by one
-	sdc.decrement('systemname.subsystem.value', -10); // Decrement by 10
-	sdc.counter('systemname.subsystem.value, 100); // Indrement by 100
+    sdc.decrement('systemname.subsystem.value', -10); // Decrement by 10
+    sdc.counter('systemname.subsystem.value, 100); // Indrement by 100
+
+You can provide a sampling as a float as well. e.g. the following will let statsd
+know that you are sampling 10% of the events:
+
+    sdc.increment('systemname.subsystem.value', 1, 0.1);
 
 ### Gauges:
 
