@@ -6,14 +6,14 @@ Node.js client for [statsd](https://github.com/etsy/statsd).
 Quick tour
 ----------
 
-    var sdc = new require('statsd-client')('statsd.example.com');
+    var sdc = new require('statsd-client')({host: 'statsd.example.com'});
 
 	var timer = new Date();
 	sdc.increment('some.counter'); // Increment by one.
 	sdc.gauge('some.gauge', 10); // Set gauge to 10
 	sdc.timing('some.timer', timer); // Calculates time diff
 
-	sdc.close(); // Optional - stop now
+	sdc.close(); // Optional - stop NOW
 
 API
 ---
@@ -21,15 +21,16 @@ API
 ### Initialization
 
     var SDC = require('statsd-client'),
-        sdc = new SDC('statsd.example.com', {port: 8124, debug: true});
+        sdc = new SDC({host: 'statsd.example.com', port: 8124, debug: true});
 
 Available options:
 
- * `debug` (default off): print what is being sent to stderr.
- * `socket_timeout` (default 1000 ms): How long to wait before auto-closing the
-   socket (it will be re-opened on demand). Set to zero to disable auto-closing.
- * `port` (default 8125): Port to contact the statsd-daemon on.
- * `prefix` (default ""): Prefix all stats with this value.
+ * `host`: Where to send the stats (default `localhost`).
+ * `debug`: Print what is being sent to stderr (default `false`).
+ * `port`: Port to contact the statsd-daemon on (default `8125`).
+ * `prefix`: Prefix all stats with this value (default `""`).
+ * `socket_timeout`: Auto-closes the socket after this long without activity
+   (default 1000 ms; 0 disables this).
 
 ### Counting stuff:
 
