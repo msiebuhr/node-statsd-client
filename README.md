@@ -74,6 +74,24 @@ The call is idempotent, so you can call it "just to be sure". And if you submit
 new metrics later, the socket will automatically be re-created, and a new
 timeout-timer started.
 
+### Namespaces
+
+The library supports getting "child" clients with extra prefixes, to help with
+making sane name-spacing in apps:
+
+    // Create generic client
+    var sdc = new StatsDClient({host: 'statsd.example.com', prefix: 'systemname');
+	sdc.increment('foo'); // Increments 'systemname.foo'
+	... do great stuff ...
+
+    // Subsystem A
+	var sdcA = sdc.getChildClient('a');
+	sdcA.increment('foo'); // Increments 'systemname.a.foo'
+
+    // Subsystem B
+	var sdcB = sdc.getChildClient('b');
+	sdcB.increment('foo'); // Increments 'systemname.b.foo'
+
 What's broken
 -------------
 
