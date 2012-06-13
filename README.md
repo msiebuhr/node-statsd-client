@@ -32,7 +32,7 @@ Available options:
  * `socket_timeout`: Auto-closes the socket after this long without activity
    (default 1000 ms; 0 disables this).
 
-### Counting stuff:
+### Counting stuff
 
 Counters are supported, both as raw `.counter(metric, delta)` and with the
 shortcuts `.increment(metric, [delta=1])` and `.decrement(metric, [delta=-1])`:
@@ -41,13 +41,13 @@ shortcuts `.increment(metric, [delta=1])` and `.decrement(metric, [delta=-1])`:
 	sdc.decrement('systemname.subsystem.value', -10); // Decrement by 10
 	sdc.counter('systemname.subsystem.value, 100); // Indrement by 100
 
-### Gauges:
+### Gauges
 
 Sends an arbitrary number to the back-end:
 
 	sdc.gauge('what.you.gauge', 100);
 
-### Timing:
+### Delays
 
 Keep track of how fast (or slow) your stuff is:
 
@@ -59,9 +59,15 @@ Keep track of how fast (or slow) your stuff is:
 If it is given a `Date`, it will calculate the difference, and anything else
 will be passed straight through.
 
-### Stopping
+And don't let the name (or nifty interface) fool you - it can measure any kind
+of number, where you want to see the distribution (content lengths, list items,
+query sizes, ...)
 
-By default, the socket is closed if it hasn't been used for a second (the `socket_timeout` in the init-options), but it can also be force-closed with `.close()`:
+### Stopping gracefully
+
+By default, the socket is closed if it hasn't been used for a second (see
+`socket_timeout` in the init-options), but it can also be force-closed with
+`.close()`:
 
 	var start = new Date();
 	setTimeout(function () {
@@ -74,7 +80,7 @@ The call is idempotent, so you can call it "just to be sure". And if you submit
 new metrics later, the socket will automatically be re-created, and a new
 timeout-timer started.
 
-### Namespaces
+### Prefix-magic
 
 The library supports getting "child" clients with extra prefixes, to help with
 making sane name-spacing in apps:
@@ -91,6 +97,9 @@ making sane name-spacing in apps:
     // Subsystem B
 	var sdcB = sdc.getChildClient('b');
 	sdcB.increment('foo'); // Increments 'systemname.b.foo'
+
+Internally, they all use the same socket, so calling `.close()` on any of them
+will allow the entire program to stop gracefully.
 
 What's broken
 -------------
