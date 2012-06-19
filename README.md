@@ -63,6 +63,28 @@ And don't let the name (or nifty interface) fool you - it can measure any kind
 of number, where you want to see the distribution (content lengths, list items,
 query sizes, ...)
 
+### Stream helpers
+
+There is some helpers for measuring what's going though streams:
+
+    var sdc = new StatsDClient({...});
+
+	var source = fs.createReadStream('some_file.txt'),
+		dest = fs.createWriteStream('/dev/null');
+
+	// Option 1: Attach hooks directly to a stream (most effeicient)
+	sdc.measureStreamSize('key_for_counter', source);
+
+	// Option 2: Pipe through proxy-stream with hooks attached
+	source
+	    .pipe(sdc.measureStreamLatency('key_for_timer'))
+		.pipe(dest);
+
+This will both measure the amount of data sent through the system
+(`.measureStreamSize(key, [stream])`) and how long it takes to get i through
+(`.measureStreamLatency(key, [stream])`). It is also possible to measure the
+total bandwith of the stream using `.measureStreamBandwidth(key, [stream])`.
+
 ### Stopping gracefully
 
 By default, the socket is closed if it hasn't been used for a second (see
