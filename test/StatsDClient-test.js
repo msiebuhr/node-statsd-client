@@ -5,7 +5,7 @@ var vows = require('vows'),
 
 function assertGotMessage(message) {
     return function (client) {
-        assert(client._ephemeralSocket.sent_messages.indexOf(message) !== -1);
+        assert(client._ephemeralSocket.testAndDeleteMessage(message));
     }
 }
 
