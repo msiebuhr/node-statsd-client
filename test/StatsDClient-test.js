@@ -16,6 +16,14 @@ vows.describe('StatsDClient Basics').addBatch({
                 _ephemeralSocket: new FakeEphemeralSocket()
             });
         },
+        'add trailing dot at the end of the prefix': {
+            'test': function () {
+                assert.equal(new StatsDClient({prefix: 'test'}).options.prefix, 'test.');
+            },
+            'test.': function () {
+                assert.equal(new StatsDClient({prefix: 'test.'}).options.prefix, 'test.');
+            }
+        },
         '.increment(foo)': {
             topic: function (client) {
                 client.increment('foo');
