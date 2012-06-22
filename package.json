@@ -15,7 +15,9 @@
   },
   "main": "lib/statsd-client.js",
   "dependencies": {},
-  "devDependencies": {},
+  "devDependencies": {
+    "vows": "~0.6.2"
+    },
   "optionalDependencies": {},
   "engines": {
     "node": "*"
