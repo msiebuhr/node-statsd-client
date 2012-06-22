@@ -12,7 +12,12 @@
   },
   "main": "lib/statsd-client.js",
   "dependencies": {},
-  "devDependencies": {},
+  "devDependencies": {
+      "vows": "v0.6.2"
+  },
+  "scripts": {
+      "test": "vows --spec"
+  },
   "optionalDependencies": {},
   "engines": {
     "node": "*"
