@@ -10,9 +10,14 @@
     "type": "git",
     "url": "git://github.com/msiebuhr/node-statsd-client.git"
   },
+  "scripts": {
+    "test": "./node_modules/.bin/vows"
+  },
   "main": "lib/statsd-client.js",
   "dependencies": {},
-  "devDependencies": {},
+  "devDependencies": {
+    "vows": "~0.6.2"
+  },
   "optionalDependencies": {},
   "engines": {
     "node": "*"
