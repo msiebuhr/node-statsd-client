@@ -3,6 +3,8 @@ node-statsd-client
 
 Node.js client for [statsd](https://github.com/etsy/statsd).
 
+[![Build Status](https://secure.travis-ci.org/msiebuhr/node-statsd-client.png?branch=master)](http://travis-ci.org/msiebuhr/node-statsd-client)
+
 Quick tour
 ----------
 
