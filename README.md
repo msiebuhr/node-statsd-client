@@ -134,4 +134,4 @@ LICENSE
 -------
 
 ISC - see
-[LICENSE.txt](https://github.com/msiebuhr/node-statsd-client/blob/master/LICENSE.txt).
+[LICENSE](https://github.com/msiebuhr/node-statsd-client/blob/master/LICENSE).
