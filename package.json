@@ -13,13 +13,12 @@
   "main": "lib/statsd-client.js",
   "dependencies": {},
   "devDependencies": {
+      "jshint": "*",
       "vows": "v0.6.2"
   },
   "scripts": {
-      "test": "vows --spec"
+      "prepublish": "vows; jshint lib/ test/",
+      "test": "vows --spec; jshint lib/ test/"
   },
-  "optionalDependencies": {},
-  "engines": {
-    "node": "*"
-  }
+  "optionalDependencies": {}
 }
