@@ -6,30 +6,44 @@ var vows = require('vows'),
 function assertGotMessage(message) {
     return function (client) {
         assert(client._ephemeralSocket.testAndDeleteMessage(message));
-    }
+    };
 }
 
 vows.describe('StatsDClient Basics').addBatch({
+    'Namespaces': {
+        'test → test.': function () {
+            assert.equal(new StatsDClient({prefix: 'test'}).options.prefix, 'test.');
+        },
+        'test. → test.': function () {
+            assert.equal(new StatsDClient({prefix: 'test.'}).options.prefix, 'test.');
+        }
+    },
     'StatsDClient()': {
         topic: function () {
             return new StatsDClient({
                 _ephemeralSocket: new FakeEphemeralSocket()
             });
         },
-        'add trailing dot at the end of the prefix': {
-            'test': function () {
-                assert.equal(new StatsDClient({prefix: 'test'}).options.prefix, 'test.');
+        '.counter(abc, 1)': {
+            topic: function (client) {
+                client.counter('abc', 1);
+                return client;
             },
-            'test.': function () {
-                assert.equal(new StatsDClient({prefix: 'test.'}).options.prefix, 'test.');
-            }
+            'abc:1|c': assertGotMessage('abc:1|c')
+        },
+        '.counter(abc, -5)': {
+            topic: function (client) {
+                client.counter('abc', -5);
+                return client;
+            },
+            'abc:-5|c': assertGotMessage('abc:-5|c')
         },
         '.increment(foo)': {
             topic: function (client) {
                 client.increment('foo');
                 return client;
             },
-            'foo:1|c': assertGotMessage('foo:1|c'),
+            'foo:1|c': assertGotMessage('foo:1|c')
         },
         '.increment(foo, 10)': {
             topic: function (c) {
