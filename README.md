@@ -75,17 +75,36 @@ There is some helpers for measuring what's going though streams:
 		dest = fs.createWriteStream('/dev/null');
 
 	// Option 1: Attach hooks directly to a stream (most effeicient)
-	sdc.measureStreamSize('key_for_counter', source);
+	sdc.helpers.streamSize('key_for_counter', source);
 
 	// Option 2: Pipe through proxy-stream with hooks attached
 	source
-	    .pipe(sdc.measureStreamLatency('key_for_timer'))
+	    .pipe(sdc.helpers.streamLatency('key_for_timer'))
 		.pipe(dest);
 
 This will both measure the amount of data sent through the system
-(`.measureStreamSize(key, [stream])`) and how long it takes to get i through
-(`.measureStreamLatency(key, [stream])`). It is also possible to measure the
-total bandwith of the stream using `.measureStreamBandwidth(key, [stream])`.
+(`.streamSize(key, [stream])`) and how long it takes to get i through
+(`.streamLatency(key, [stream])`). It is also possible to measure the total
+bandwith of the stream using `.streamBandwidth(key, [stream])`.
+
+### Express helper
+
+There's also a helper for measuring stuff in [Express.js](http://expressjs.com)
+via middleware:
+
+    var app = express();
+	    sdc = new StatsDClient({...});
+	
+	app.use(sdc.helpers.getExpressMiddleware('somePrefix'));
+	// or
+	app.get('/',
+		sdc.helpers.getExpressMiddleware('otherPrefix'),
+		function (req, res, next) { req.pipe(res); });
+
+	app.listen(3000);
+
+This will count responses by status-code (`prefix.<statuscode>`) and the
+overall response-times.
 
 ### Stopping gracefully
 
