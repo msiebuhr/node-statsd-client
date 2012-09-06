@@ -27,6 +27,42 @@ vows.describe('Helpers').addBatch({
                 'takes three arguments': function (em) {
                     assert.equal(em.length, 3);
                 }
+            },
+
+            'streamHook({data: function(d){}})': {
+                topic: function (helpers, client) {
+                    return helpers.streamHook({data: function (d) {}});
+                },
+                'is event-emitter': function (sh) {
+                    assert.instanceOf(sh, require('events').EventEmitter);
+                }
+            },
+
+            'streamBandwidth(foobar)': {
+                topic: function (helpers, client) {
+                    return helpers.streamBandwidth("foobar");
+                },
+                'is event-emitter': function (sh) {
+                    assert.instanceOf(sh, require('events').EventEmitter);
+                }
+            },
+
+            'streamLatency(foobar)': {
+                topic: function (helpers, client) {
+                    return helpers.streamLatency("foobar");
+                },
+                'is event-emitter': function (sh) {
+                    assert.instanceOf(sh, require('events').EventEmitter);
+                }
+            },
+
+            'streamSize(foobar)': {
+                topic: function (helpers, client) {
+                    return helpers.streamSize("foobar");
+                },
+                'is event-emitter': function (sh) {
+                    assert.instanceOf(sh, require('events').EventEmitter);
+                }
             }
         }
     }
