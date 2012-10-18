@@ -49,6 +49,12 @@ Sends an arbitrary number to the back-end:
 
 	sdc.gauge('what.you.gauge', 100);
 
+### Sets
+
+Send unique occurences of events between flushes to the back-end:
+
+	sdc.set('your.set', 200);
+
 ### Delays
 
 Keep track of how fast (or slow) your stuff is:
