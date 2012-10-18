@@ -72,6 +72,13 @@ vows.describe('StatsDClient Basics').addBatch({
                 return c;
             },
             'foo:10|g': assertGotMessage('foo:10|g')
+        },
+        '.set(foo, 10)': {
+            topic: function (c) {
+                c.set('foo', 10);
+                return c;
+            },
+            'foo:10|s': assertGotMessage('foo:10|s')
         }
     }
 })['export'](module);
