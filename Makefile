@@ -5,7 +5,7 @@ PATH:=./node_modules/.bin:${PATH}
 all: lint test
 
 test:
-	vows --spec
+	mocha -R spec
 
 lint:
 	jshint lib/ test/
