@@ -83,16 +83,20 @@ describe('StatsDClient', function () {
                 assertGotMessage('foo:10|ms');
             });
 
-            it('.timing("foo", new Date(-25ms)) ~→ "foo:25|ms', function (done) {
+            it('.timing("foo", new Date(-20ms)) ~→ "foo:20|ms"', function (done) {
                 var d = new Date();
                 setTimeout(function () {
                     c.timing('foo', d);
-                    assert(
-                        c._ephemeralSocket.sent_messages.indexOf('foo:25|ms') !== -1 ||
-                        c._ephemeralSocket.sent_messages.indexOf('foo:26|ms') !== -1
+
+                    // Figure out if we git a right-looking message
+                    var sentMessages = c._ephemeralSocket.sent_messages;
+                    assert.lengthOf(sentMessages, 1);
+                    assert.match(
+                        sentMessages[0],
+                        /foo:2\d\|ms/
                     );
                     done();
-                }, 25);
+                }, 20);
             });
 
 
