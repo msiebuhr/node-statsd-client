@@ -1,5 +1,5 @@
 var StatsDClient = require('../lib/statsd-client'),
-    FakeEphemeralSocket = require('./fakeEphemeralSocket'),
+    FakeServer = require('./FakeServer'),
     assert = require('chai').assert;
 
 /*global describe before it*/
@@ -15,72 +15,65 @@ describe('StatsDClient', function () {
         });
     });
 
-    describe('W. FakeEphemeralSocket', function () {
-        var c;
+    describe('W. FakeServer', function () {
+        var s, c;
 
-        function assertGotMessage(m) {
-            assert(
-                c._ephemeralSocket.testAndDeleteMessage(m),
-                "Couldn't find message '" + m + "' among [" + c._ephemeralSocket.sent_messages.join(", ") + "]."
-            );
-        }
-
-        before(function () {
-            c = new StatsDClient({
-                _ephemeralSocket: new FakeEphemeralSocket()
-            });
+        before(function (done) {
+            s = new FakeServer();
+            c = new StatsDClient();
+            s.start(done);
         });
 
         describe("Counters", function () {
-            it('.counter("abc", 1) → "abc:1|c', function () {
+            it('.counter("abc", 1) → "abc:1|c', function (done) {
                 c.counter('abc', 1);
-                assertGotMessage('abc:1|c');
+                s.expectMessage('abc:1|c', done);
             });
 
-            it('.counter("abc", -5) → "abc:-5|c', function () {
+            it('.counter("abc", -5) → "abc:-5|c', function (done) {
                 c.counter('abc', -5);
-                assertGotMessage('abc:-5|c');
+                s.expectMessage('abc:-5|c', done);
             });
 
-            it('.increment("abc") → "abc:1|c', function () {
+            it('.increment("abc") → "abc:1|c', function (done) {
                 c.increment('abc');
-                assertGotMessage('abc:1|c');
+                s.expectMessage('abc:1|c', done);
             });
 
-            it('.increment("abc", 10) → "abc:10|c', function () {
+            it('.increment("abc", 10) → "abc:10|c', function (done) {
                 c.increment('abc', 10);
-                assertGotMessage('abc:10|c');
+                s.expectMessage('abc:10|c', done);
             });
 
-            it('.decrement("abc", -2) → "abc:-2|c', function () {
+            it('.decrement("abc", -2) → "abc:-2|c', function (done) {
                 c.decrement('abc', -2);
-                assertGotMessage('abc:-2|c');
+                s.expectMessage('abc:-2|c', done);
             });
 
-            it('.decrement("abc", 3) → "abc:-3|c', function () {
+            it('.decrement("abc", 3) → "abc:-3|c', function (done) {
                 c.decrement('abc', -3);
-                assertGotMessage('abc:-3|c');
+                s.expectMessage('abc:-3|c', done);
             });
         });
 
         describe('Gauges', function () {
-            it('.gauge("gauge", 3) → "gauge:-3|g', function () {
+            it('.gauge("gauge", 3) → "gauge:-3|g', function (done) {
                 c.gauge('gauge', 3);
-                assertGotMessage('gauge:3|g');
+                s.expectMessage('gauge:3|g', done);
             });
         });
 
         describe('Sets', function () {
-            it('.set("foo", 10) → "foo:10|s', function () {
+            it('.set("foo", 10) → "foo:10|s', function (done) {
                 c.set('foo', 10);
-                assertGotMessage('foo:10|s');
+                s.expectMessage('foo:10|s', done);
             });
         });
 
         describe('Timers', function () {
-            it('.timing("foo", 10) → "foo:10|ms', function () {
+            it('.timing("foo", 10) → "foo:10|ms', function (done) {
                 c.timing('foo', 10);
-                assertGotMessage('foo:10|ms');
+                s.expectMessage('foo:10|ms', done);
             });
 
             it('.timing("foo", new Date(-20ms)) ~→ "foo:20|ms"', function (done) {
@@ -88,14 +81,18 @@ describe('StatsDClient', function () {
                 setTimeout(function () {
                     c.timing('foo', d);
 
-                    // Figure out if we git a right-looking message
-                    var sentMessages = c._ephemeralSocket.sent_messages;
-                    assert.lengthOf(sentMessages, 1);
-                    assert.match(
-                        sentMessages[0],
-                        /foo:2\d\|ms/
-                    );
-                    done();
+                    setTimeout(function () {
+                        // Figure out if we git a right-looking message
+                        var sentMessages = s._packetsReceived;
+                        assert.lengthOf(sentMessages, 1);
+                        assert.match(
+                            sentMessages[0],
+                            /foo:2\d\|ms/
+                        );
+
+                        // Expect it anyway, as we need to clean up the packet list.
+                        s.expectMessage(sentMessages[0], done);
+                    }, 10);
                 }, 20);
             });
 
