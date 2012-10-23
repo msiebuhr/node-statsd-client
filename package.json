@@ -3,7 +3,7 @@
   "name": "statsd-client",
   "description": "Yet another client for Etsy's statsd",
   "keywords": ["statsd", "client", "metrics", "udp"],
-  "version": "0.0.5",
+  "version": "0.0.6",
   "homepage": "https://github.com/msiebuhr/node-statsd-client",
   "bugs": "https://github.com/msiebuhr/node-statsd-client/issues",
   "repository": {
