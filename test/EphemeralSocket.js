@@ -43,4 +43,22 @@ describe('EphemeralSocket', function () {
             }, 10);
         });
     });
+
+    describe("Socket timeout", function () {
+        var te;
+        before(function (done) {
+            te = new EphemeralSocket({
+                socket_timeout: 1
+            });
+            te._createSocket(done);
+        });
+
+        it("Is open → sleep 10ms → closed", function (done) {
+            assert(te._socket, "Socket isn't open; should be.");
+            setTimeout(function () {
+                assert(!te._socket, "Socket is open; shouldn't be.");
+                done();
+            }, 10);
+        });
+    });
 });
