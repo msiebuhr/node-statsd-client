@@ -37,7 +37,7 @@ describe('EphemeralSocket', function () {
 
     it("Closes _socket when 'error' is emitted", function (done) {
         var es = c._ephemeralSocket;
-        es._create_socket(function () {
+        es._createSocket(function () {
             // Emit error, wait some and check.
             es._socket.emit('error');
             setTimeout(function () {
