@@ -34,4 +34,16 @@ describe('EphemeralSocket', function () {
             return done();
         }, 25);
     });
+
+    it("Closes _socket when 'error' is emitted", function (done) {
+        var es = c._ephemeralSocket;
+        es._create_socket(function () {
+            // Emit error, wait some and check.
+            es._socket.emit('error');
+            setTimeout(function () {
+                assert(!es._socket, "Socket isn't closed.");
+                done();
+            }, 10);
+        });
+    });
 });
