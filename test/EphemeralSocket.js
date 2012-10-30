@@ -1,27 +1,25 @@
 /* Test the Ephemeral socket
  */
 
-var StatsDClient = require('../lib/statsd-client'),
+var EphemeralSocket = require('../lib/EphemeralSocket'),
     FakeServer = require('./FakeServer'),
     assert = require('chai').assert;
 
 /*global describe before it*/
 
 describe('EphemeralSocket', function () {
-    var s, c;
+    var s, e;
 
     before(function (done) {
         s = new FakeServer();
-        c = new StatsDClient({
-            //debug: true
-        });
+        e = new EphemeralSocket();
 
         s.start(done);
     });
 
     it("Send 50 messages", function (done) {
         for (var i = 0; i < 50; i += 1) {
-            c.gauge('foobar', i);
+            e.send('foobar');
         }
         setTimeout(function () {
             // Received some packets
@@ -36,12 +34,11 @@ describe('EphemeralSocket', function () {
     });
 
     it("Closes _socket when 'error' is emitted", function (done) {
-        var es = c._ephemeralSocket;
-        es._createSocket(function () {
+        e._createSocket(function () {
             // Emit error, wait some and check.
-            es._socket.emit('error');
+            e._socket.emit('error');
             setTimeout(function () {
-                assert(!es._socket, "Socket isn't closed.");
+                assert(!e._socket, "Socket isn't closed.");
                 done();
             }, 10);
         });
