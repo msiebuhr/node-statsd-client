@@ -76,6 +76,7 @@ describe('StatsDClient', function () {
         });
 
         it('.timing("foo", new Date(-20ms)) ~→ "foo:20|ms"', function (done) {
+            this.slow(100);
             var d = new Date();
             setTimeout(function () {
                 c.timing('foo', d);

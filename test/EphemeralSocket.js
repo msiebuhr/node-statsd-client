@@ -18,6 +18,7 @@ describe('EphemeralSocket', function () {
     });
 
     it("Send 50 messages", function (done) {
+        this.slow(500);
         for (var i = 0; i < 50; i += 1) {
             e.send('foobar');
         }
