@@ -13,7 +13,8 @@ var SDC = require('../lib/statsd-client'),
 function sendSomeData() {
     iterations += 1;
     if (iterations % 10 === 0) {
-        process.stdout.write('\rIterations: ' + iterations);
+        process.stdout.write('\r' + ['◒', '◐', '◓',  '◑'][iterations/10 % 4]);
+        iterations = iterations >= 40 ? 0 : iterations;
     }
 
     rand = Math.round(Math.random() * 10);
