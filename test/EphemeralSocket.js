@@ -45,6 +45,19 @@ describe('EphemeralSocket', function () {
         });
     });
 
+    it("Does not crash when many errors are emitted", function (done) {
+        e._createSocket(function () {
+            e._socket.emit('error');
+            e._socket.emit('error');
+            e._socket.emit('error');
+
+            setTimeout(function () {
+                assert(!e._socket, "Socket isn't closed")
+                done();
+            }, 10);
+        });
+    });
+
     describe("Socket timeout", function () {
         var te;
         before(function (done) {
