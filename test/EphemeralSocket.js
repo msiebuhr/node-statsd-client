@@ -54,7 +54,7 @@ describe('EphemeralSocket', function () {
             setTimeout(function () {
                 assert.isUndefined(e._socket);
                 done();
-            }, 10);
+            }, 15);
         });
     });
 
@@ -72,7 +72,7 @@ describe('EphemeralSocket', function () {
             setTimeout(function () {
                 assert(!te._socket, "Socket is open; shouldn't be.");
                 done();
-            }, 10);
+            }, 15);
         });
     });
 });
