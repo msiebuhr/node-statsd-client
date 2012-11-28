@@ -52,7 +52,7 @@ describe('EphemeralSocket', function () {
             e._socket.emit('error');
 
             setTimeout(function () {
-                assert(!e._socket, "Socket isn't closed")
+                assert.isUndefined(e._socket);
                 done();
             }, 10);
         });
