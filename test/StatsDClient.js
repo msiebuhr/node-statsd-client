@@ -23,6 +23,10 @@ describe('StatsDClient', function () {
         s.start(done);
     });
 
+    after(function () {
+        s.stop();
+    });
+
     describe("Counters", function () {
         it('.counter("abc", 1) → "abc:1|c', function (done) {
             c.counter('abc', 1);

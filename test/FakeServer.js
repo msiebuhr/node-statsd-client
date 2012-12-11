@@ -28,6 +28,13 @@ FakeServer.prototype.start = function (cb) {
     this._socket.bind(this.port);
 };
 
+/* For closing server down after use.
+ */
+FakeServer.prototype.stop = function () {
+    this._socket.close();
+    this._socket = undefined;
+};
+
 /* Expect `message` to arrive and call `cb` if/when it does.
  */
 FakeServer.prototype.expectMessage = function (message, cb) {
