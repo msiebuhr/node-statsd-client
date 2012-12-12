@@ -5,7 +5,7 @@ var EphemeralSocket = require('../lib/EphemeralSocket'),
     FakeServer = require('./FakeServer'),
     assert = require('chai').assert;
 
-/*global describe before it*/
+/*global describe before it after*/
 
 describe('EphemeralSocket', function () {
     var s, e;
