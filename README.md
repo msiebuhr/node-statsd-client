@@ -112,6 +112,15 @@ via middleware:
 This will count responses by status-code (`prefix.<statuscode>`) and the
 overall response-times.
 
+It can also measure per-URL (e.g. PUT to `/:user/:thing` will become
+`PUT_user_thing` by setting the `timeByUrl: true` in the `options`-object:
+
+    app.use(sdc.helpers.getExpressMiddleware('prefix', { timeByUrl: true }));
+
+As the names can become rather odd in corner-cases (esp. regexes and non-REST
+interfaces), you can specify another value by setting `res.locals.statsdUrlKey`
+at a later point.
+
 ### Stopping gracefully
 
 By default, the socket is closed if it hasn't been used for a second (see
