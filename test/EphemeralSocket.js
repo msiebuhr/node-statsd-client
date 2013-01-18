@@ -50,15 +50,20 @@ describe('EphemeralSocket', function () {
     });
 
     it("Does not crash when many errors are emitted", function (done) {
-        e._createSocket(function () {
-            e._socket.emit('error');
-            e._socket.emit('error');
-            e._socket.emit('error');
+        var s = new EphemeralSocket();
+        s._createSocket(function () {
+            function emitError() {
+                if (s._socket) {
+                    s._socket.emit('error');
+                    process.nextTick(emitError);
+                }
+            }
+            emitError();
 
             setTimeout(function () {
-                assert.isUndefined(e._socket);
+                assert(!s._socket, "Socket isn't closed.");
                 done();
-            }, 15);
+            }, 5);
         });
     });
 
