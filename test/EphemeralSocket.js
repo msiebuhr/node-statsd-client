@@ -71,7 +71,7 @@ describe('EphemeralSocket', function () {
         var te;
         before(function (done) {
             te = new EphemeralSocket({
-                socket_timeout: 1
+                socketTimeout: 1
             });
             te._createSocket(done);
         });
