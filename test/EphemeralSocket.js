@@ -31,17 +31,46 @@ describe('EphemeralSocket', function () {
         }, 25);
     });
 
-    it("Send 50 messages", function (done) {
+    it("Sends data immediately with maxBufferSize = 0", function (done) {
+        var withoutBuffer = new EphemeralSocket({maxBufferSize: 0}),
+            start = Date.now();
+
+        withoutBuffer.send('do_not_buffer');
+
+        s.expectMessage('do_not_buffer', function (err) {
+            assert.closeTo(Date.now() - start, 0, 5);
+            withoutBuffer.close();
+            done(err);
+        });
+    });
+
+    it("Doesn't send data immediately with maxBufferSize > 0", function (done) {
+        var withBuffer = new EphemeralSocket({socketTimeout: 25});
+        withBuffer.send('buffer_this');
+        var start = Date.now();
+
+        s.expectMessage('buffer_this', function (err) {
+            assert.operator(Date.now() - start, '>=', 25);
+            withBuffer.close();
+            done(err);
+        });
+    });
+
+    it("Send 500 messages", function (done) {
         this.slow(500);
-        for (var i = 0; i < 50; i += 1) {
-            e.send('foobar');
+
+        // Send messages
+        for (var i = 0; i < 500; i += 1) {
+            e.send('foobar' + i);
         }
+        e.close();
+
         setTimeout(function () {
             // Received some packets
             assert.closeTo(
                 s._packetsReceived.length,
-                50, // Should get 100
-                5 // ±10
+                500, // Should get 500
+                5 // ±5
             );
             s._packetsReceived = [];
             return done();

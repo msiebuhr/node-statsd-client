@@ -19,7 +19,9 @@ describe('StatsDClient', function () {
 
     before(function (done) {
         s = new FakeServer();
-        c = new StatsDClient();
+        c = new StatsDClient({
+            maxBufferSize: 0
+        });
         s.start(done);
     });
 
