@@ -21,6 +21,16 @@ describe('EphemeralSocket', function () {
         s.stop();
     });
 
+    it("Respects host-configuration", function (done) {
+        var w = new EphemeralSocket({host: 'some_other_host.sbhr.dk'});
+        w.send('wrong_message');
+
+        setTimeout(function () {
+            assert.lengthOf(s._packetsReceived, 0);
+            done();
+        }, 25);
+    });
+
     it("Send 50 messages", function (done) {
         this.slow(500);
         for (var i = 0; i < 50; i += 1) {
