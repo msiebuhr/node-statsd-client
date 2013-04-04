@@ -46,7 +46,7 @@ shortcuts `.increment(metric, [delta=1])` and `.decrement(metric, [delta=-1])`:
 ```javascript
 sdc.increment('systemname.subsystem.value'); // Increment by one
 sdc.decrement('systemname.subsystem.value', -10); // Decrement by 10
-sdc.counter('systemname.subsystem.value, 100); // Indrement by 100
+sdc.counter('systemname.subsystem.value', 100); // Indrement by 100
 ```
 
 ### Gauges
