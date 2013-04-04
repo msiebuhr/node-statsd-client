@@ -35,7 +35,7 @@ Available options:
  * `debug`: Print what is being sent to stderr (default `false`).
  * `port`: Port to contact the statsd-daemon on (default `8125`).
  * `prefix`: Prefix all stats with this value (default `""`).
- * `socket_timeout`: Auto-closes the socket after this long without activity
+ * `socketTimeout`: Auto-closes the socket after this long without activity
    (default 1000 ms; 0 disables this).
 
 ### Counting stuff
@@ -142,7 +142,7 @@ at a later point.
 ### Stopping gracefully
 
 By default, the socket is closed if it hasn't been used for a second (see
-`socket_timeout` in the init-options), but it can also be force-closed with
+`socketTimeout` in the init-options), but it can also be force-closed with
 `.close()`:
 
 ```javascript
