@@ -83,30 +83,6 @@ And don't let the name (or nifty interface) fool you - it can measure any kind
 of number, where you want to see the distribution (content lengths, list items,
 query sizes, ...)
 
-### Stream helpers
-
-There is some helpers for measuring what's going though streams:
-
-```javascript
-var sdc = new StatsDClient({...});
-
-var source = fs.createReadStream('some_file.txt'),
-	dest = fs.createWriteStream('/dev/null');
-
-// Option 1: Attach hooks directly to a stream (most effeicient)
-sdc.helpers.streamSize('key_for_counter', source);
-
-// Option 2: Pipe through proxy-stream with hooks attached
-source
-	.pipe(sdc.helpers.streamLatency('key_for_timer'))
-	.pipe(dest);
-```
-
-This will both measure the amount of data sent through the system
-(`.streamSize(key, [stream])`) and how long it takes to get i through
-(`.streamLatency(key, [stream])`). It is also possible to measure the total
-bandwith of the stream using `.streamBandwidth(key, [stream])`.
-
 ### Express helper
 
 There's also a helper for measuring stuff in [Express.js](http://expressjs.com)
