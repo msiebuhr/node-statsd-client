@@ -20,24 +20,4 @@ describe('Helpers', function () {
         assert.isFunction(f);
         assert.lengthOf(f, 3);
     });
-
-    it('.streamHook({data: function (d) {}}) → EventEmitter', function () {
-        var f = c.helpers.streamHook({data: function (d) {}});
-        assert.instanceOf(f, EventEmitter);
-    });
-
-    it('.streamBandwidth("foobar") → EventEmitter', function () {
-        var f = c.helpers.streamBandwidth("foobar");
-        assert.instanceOf(f, EventEmitter);
-    });
-
-    it('.streamLatency("foobar") → EventEmitter', function () {
-        var f = c.helpers.streamLatency("foobar");
-        assert.instanceOf(f, EventEmitter);
-    });
-
-    it('.streamSize("foobar") → EventEmitter', function () {
-        var f = c.helpers.streamSize("foobar");
-        assert.instanceOf(f, EventEmitter);
-    });
 });
