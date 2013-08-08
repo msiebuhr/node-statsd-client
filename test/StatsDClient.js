@@ -93,7 +93,7 @@ describe('StatsDClient', function () {
                     assert.lengthOf(sentMessages, 1);
                     assert.match(
                         sentMessages[0],
-                        /foo:2\d\|ms/
+                        /foo:[12]\d\|ms/
                     );
 
                     // Expect it anyway, as we need to clean up the packet list.
