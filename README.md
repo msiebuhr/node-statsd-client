@@ -9,7 +9,8 @@ Quick tour
 ----------
 
 ```javascript
-var sdc = new require('statsd-client')({host: 'statsd.example.com'});
+var SDC = require('statsd-client'),
+	sdc = new SDC({host: 'statsd.example.com'});
 
 var timer = new Date();
 sdc.increment('some.counter'); // Increment by one.
