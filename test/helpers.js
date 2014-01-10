@@ -1,5 +1,4 @@
 var StatsDClient = require('../lib/statsd-client'),
-    EventEmitter = require('events').EventEmitter,
     assert = require('chai').assert;
 
 /*global describe before it*/

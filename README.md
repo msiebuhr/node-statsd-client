@@ -105,8 +105,9 @@ app.listen(3000);
 This will count responses by status-code (`prefix.<statuscode>`) and the
 overall response-times.
 
-It can also measure per-URL (e.g. PUT to `/:user/:thing` will become
-`PUT_user_thing` by setting the `timeByUrl: true` in the `options`-object:
+It can also measure per-URL timings and counts (e.g. PUT to `/:user/:thing`
+will become `PUT_user_thing` by setting the `timeByUrl: true` and
+`countByUrl: true` in the `options`-object:
 
 ```javascript
 app.use(sdc.helpers.getExpressMiddleware('prefix', { timeByUrl: true }));
