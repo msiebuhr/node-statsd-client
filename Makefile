@@ -1,11 +1,9 @@
-PATH:=./node_modules/.bin:${PATH}
-
 .PHONY: all test lint
 
 all: lint test
 
 test:
-	mocha -R spec
+	./node_modules/.bin/mocha -R spec
 
 lint:
-	jshint lib/ test/
+	./node_modules/.bin/jshint lib/ test/
