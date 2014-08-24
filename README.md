@@ -56,6 +56,9 @@ Sends an arbitrary number to the back-end:
 
 ```javascript
 sdc.gauge('what.you.gauge', 100);
+sdc.gaugeDelta('what.you.gauge', 20);  // Will now count 120
+sdc.gaugeDelta('what.you.gauge', -70); // Will now count 50
+sdc.gauge('what.you.gauge', 10);       // Will now count 10
 ```
 
 ### Sets
