@@ -18,7 +18,6 @@
     "mocha": "~1.6.0"
   },
   "scripts": {
-    "prepublish": "mocha; jshint lib/ test/",
     "test": "mocha -R spec; jshint lib/ test/"
   },
   "optionalDependencies": {}
