@@ -62,9 +62,19 @@ describe('StatsDClient', function () {
     });
 
     describe('Gauges', function () {
-        it('.gauge("gauge", 3) → "gauge:-3|g', function (done) {
+        it('.gauge("gauge", 3) → "gauge:3|g', function (done) {
             c.gauge('gauge', 3);
             s.expectMessage('gauge:3|g', done);
+        });
+
+        it('.gaugeDelta("gauge", 3) → "gauge:+3|g', function (done) {
+            c.gaugeDelta('gauge', 3);
+            s.expectMessage('gauge:+3|g', done);
+        });
+
+        it('.gaugeDelta("gauge", -3) → "gauge:-3|g', function (done) {
+            c.gaugeDelta('gauge', -3);
+            s.expectMessage('gauge:-3|g', done);
         });
     });
 
