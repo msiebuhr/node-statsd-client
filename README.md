@@ -30,14 +30,22 @@ var SDC = require('statsd-client'),
 	sdc = new SDC({host: 'statsd.example.com', port: 8124, debug: true});
 ```
 
-Available options:
+Global options:
+ * `prefix`: Prefix all stats with this value (default `""`).
+ * `debug`: Print what is being sent to stderr (default `false`).
+ * `socketTimeout`: Dual-use timer. Will flush metrics every interval. For UDP,
+   it auto-closes the socket after this long without activity (default 1000 ms;
+   0 disables this).
+
+UDP options:
 
  * `host`: Where to send the stats (default `localhost`).
- * `debug`: Print what is being sent to stderr (default `false`).
  * `port`: Port to contact the statsd-daemon on (default `8125`).
- * `prefix`: Prefix all stats with this value (default `""`).
- * `socketTimeout`: Auto-closes the socket after this long without activity
-   (default 1000 ms; 0 disables this).
+
+HTTP options:
+ * `host`: The URL to send metrics to (default: `http://localhost`).
+ * `headers`: Additional headers to send (default `{}`)
+ * `method`: What HTTP method to use (default `PUT`)
 
 ### Counting stuff
 

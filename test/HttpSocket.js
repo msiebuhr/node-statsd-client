@@ -12,7 +12,7 @@ describe('HttpSocket', function () {
     var s, e, messages;
 
     before(function (done) {
-        e = new HttpSocket();
+        e = new HttpSocket({ host: 'http://localhost:8125' });
 
         messages = new MessageCollector();
         s = http.createServer(function (req, res) {
@@ -45,7 +45,7 @@ describe('HttpSocket', function () {
     });
 
     it("Sends data immediately with maxBufferSize = 0", function (done) {
-        var withoutBuffer = new HttpSocket({maxBufferSize: 0}),
+        var withoutBuffer = new HttpSocket({maxBufferSize: 0, host: 'http://localhost:8125'}),
             start = Date.now();
 
         withoutBuffer.send('do_not_buffer');
@@ -58,7 +58,7 @@ describe('HttpSocket', function () {
     });
 
     it("Doesn't send data immediately with maxBufferSize > 0", function (done) {
-        var withBuffer = new HttpSocket({socketTimeout: 25});
+        var withBuffer = new HttpSocket({socketTimeout: 25, host: 'http://localhost:8125'});
         withBuffer.send('buffer_this');
         var start = Date.now();
 
