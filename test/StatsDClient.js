@@ -1,4 +1,6 @@
 var StatsDClient = require('../lib/statsd-client'),
+    HttpSocket = require('../lib/HttpSocket'),
+    EphemeralSocket = require('../lib/EphemeralSocket'),
     FakeServer = require('./FakeServer'),
     assert = require('chai').assert;
 
@@ -111,5 +113,29 @@ describe('StatsDClient', function () {
                 }, 10);
             }, 20);
         });
+    });
+});
+
+describe('StatsDClient / HTTP', function () {
+    it('Giving plain host=example.com gives UDP backend', function () {
+        assert.instanceOf(
+            (new StatsDClient({ host: 'example.com' }))._socket,
+            EphemeralSocket
+        );
+    });
+
+    it('Giving host=https://example.com gives HTTP backend', function () {
+        var c = new StatsDClient({
+            host: 'https://example.com'
+        });
+
+        assert.instanceOf(c._socket, HttpSocket);
+    });
+
+    it('Giving host=http://example.com gives HTTP backend', function () {
+        assert.instanceOf(
+            (new StatsDClient({ host: 'http://example.com' }))._socket,
+            HttpSocket
+        );
     });
 });
