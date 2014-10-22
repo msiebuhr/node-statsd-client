@@ -89,22 +89,4 @@ describe('HttpSocket', function () {
             return done();
         }, 25);
     });
-
-    it.skip("Does not crash when many errors are emitted", function (done) {
-        var s = new HttpSocket();
-        s._createSocket(function () {
-            function emitError() {
-                if (s._socket) {
-                    s._socket.emit('error');
-                    process.nextTick(emitError);
-                }
-            }
-            emitError();
-
-            setTimeout(function () {
-                assert(!s._socket, "Socket isn't closed.");
-                done();
-            }, 5);
-        });
-    });
 });
