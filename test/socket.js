@@ -9,7 +9,8 @@ var PORT = 8125;
 test('creates a socket', function t(assert) {
     var sock = new EphemeralSocket({
         host: 'localhost',
-        port: PORT
+        port: PORT,
+        packetQueue: { flush: 10 }
     });
 
     assert.equal(typeof sock.close, 'function');
@@ -23,7 +24,8 @@ test('can write to socket', function t(assert) {
     var server = UDPServer({ port: PORT }, function onBound() {
         var sock = new EphemeralSocket({
             host: 'localhost',
-            port: PORT
+            port: PORT,
+            packetQueue: { flush: 10 }
         });
 
         server.once('message', onMessage);
@@ -42,7 +44,9 @@ test('can write to socket', function t(assert) {
 
 test('has default ports & hosts', function t(assert) {
     var server = UDPServer({ port: PORT }, function onBound() {
-        var sock = new EphemeralSocket();
+        var sock = new EphemeralSocket({
+            packetQueue: { flush: 10 }
+        });
 
         server.once('message', onMessage);
         sock.send('hello');
@@ -62,9 +66,10 @@ test('can send multiple packets', function t(assert) {
     var server = UDPServer({ port: PORT }, function onBound() {
         var sock = new EphemeralSocket({
             host: 'localhost',
-            port: PORT
+            port: PORT,
+            packetQueue: { flush: 10 }
         });
-        var messages = [];
+        var messages = '';
 
         server.on('message', onMessage);
         sock.send('hello');
@@ -72,17 +77,15 @@ test('can send multiple packets', function t(assert) {
         sock.send('world');
 
         function onMessage(msg) {
-            messages.push(String(msg));
+            messages += msg;
 
-            if (messages.length === 3) {
+            if (messages.length === 13) {
                 onEnd();
             }
         }
 
         function onEnd() {
-            // UDP is unordered messages
-            var str = messages.sort().join('');
-            assert.equal(str, ' helloworld');
+            assert.equal(messages, 'hello\n \nworld');
 
             sock.close();
             server.close();
@@ -96,7 +99,8 @@ test('socket will unref', function t(assert) {
         var sock = new EphemeralSocket({
             host: 'localhost',
             port: PORT,
-            socket_timeout: 10
+            socket_timeout: 10,
+            packetQueue: { flush: 10 }
         });
 
         server.once('message', onMessage);
