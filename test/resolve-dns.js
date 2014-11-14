@@ -42,7 +42,7 @@ test('retries on DNS failures', function t(assert) {
                     if (self.counter === 0) {
                         cb(new Error('DNS failure'));
                     } else {
-                        cb(null, ['0.0.0.0']);
+                        cb(null, '0.0.0.0');
                     }
 
                     self.counter++;
@@ -142,3 +142,32 @@ test('DNS resolver defaults to seedList', function t(assert) {
     resolver.close();
     assert.end();
 })
+
+test('Calls dns.resolve on interval', function t(assert) {
+    var counter = 0;
+    var resolver = new DNSResolver(FAKE_HOST, {
+        timeToLive: 100,
+        dns: {
+            lookup: function (host, cb) {
+                process.nextTick(function () {
+                    counter++;
+                    cb(null, '0.0.0.' + counter);
+
+                    if (counter === 3) {
+                        close();
+                    }
+                });
+            }
+        }
+    });
+
+    resolver.lookupHost();
+
+    function close() {
+        var hostname = resolver.resolveHost('some-key');
+        assert.equal(hostname, '0.0.0.3');
+        
+        resolver.close();
+        assert.end();
+    }
+});
