@@ -1,6 +1,5 @@
 var test = require('tape');
 var dgram = require('dgram');
-var setTimeout = require('timers').setTimeout;
 
 var EphemeralSocket = require('../lib/EphemeralSocket.js');
 
@@ -110,6 +109,7 @@ test('socket will unref', function t(assert) {
             var str = String(msg);
             assert.equal(str, 'hello');
 
+            sock._queue.destroy();
             server.close();
             assert.end();
         }
