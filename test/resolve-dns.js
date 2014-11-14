@@ -127,3 +127,18 @@ test('DNS resolver will give up', function t(assert) {
         assert.end();
     }
 })
+
+test('DNS resolver defaults to seedList', function t(assert) {
+    var resolver = new DNSResolver(FAKE_HOST, {
+        backoffSettings: {
+            retries: Infinity
+        },
+        seedIP: '0.0.0.0'
+    });
+
+    var hostname = resolver.resolveHost('some-key');
+    assert.ok(isIPv4(hostname));
+
+    resolver.close();
+    assert.end();
+})
