@@ -31,6 +31,8 @@ Available options:
  * `prefix`: Prefix all stats with this value (default `""`).
  * `socket_timeout`: Auto-closes the socket after this long without activity
    (default 1000 ms; 0 disables this).
+ * `highWaterMark`: The maximum number of udp messges buffered in
+    case DNS lookup takes too long. default to 100
 
 ### Counting stuff
 
