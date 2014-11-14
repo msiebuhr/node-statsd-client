@@ -1,5 +1,6 @@
 var test = require('tape');
 var setTimeout = require('timers').setTimeout;
+var isIPv4 = require('net').isIPv4;
 
 var UDPServer = require('./lib/udp-server.js');
 var EphemeralSocket = require('../lib/EphemeralSocket.js');
@@ -30,7 +31,7 @@ test('can write to socket', function t(assert) {
         });
 
         server.once('message', onMessage);
-        sock.send('hello');
+        sock.send('hello', { name: 'key' });
 
         function onMessage(msg) {
             var str = String(msg);
@@ -50,7 +51,7 @@ test('has default ports & hosts', function t(assert) {
         });
 
         server.once('message', onMessage);
-        sock.send('hello');
+        sock.send('hello', { name: 'key' });
 
         function onMessage(msg) {
             var str = String(msg);
@@ -73,9 +74,9 @@ test('can send multiple packets', function t(assert) {
         var messages = '';
 
         server.on('message', onMessage);
-        sock.send('hello');
-        sock.send(' ');
-        sock.send('world');
+        sock.send('hello', { name: 'key' });
+        sock.send(' ', { name: 'key' });
+        sock.send('world', { name: 'key' });
 
         function onMessage(msg) {
             messages += msg;
@@ -105,7 +106,7 @@ test('socket will close and timeout', function t(assert) {
         });
 
         server.once('message', onMessage);
-        sock.send('hello');
+        sock.send('hello', { name: 'key' });
 
         function onMessage(msg) {
             var str = String(msg);
@@ -160,6 +161,28 @@ test('client.gauge()', function t(assert) {
     });
 });
 
+test('can write to socket with DNS resolver', function t(assert) {
+    var server = UDPServer({ port: PORT }, function onBound() {
+        var sock = new EphemeralSocket({
+            host: 'localhost',
+            port: PORT,
+            packetQueue: { flush: 10 }
+        });
+        sock.resolveDNS({});
+
+        server.once('message', onMessage);
+        sock.send('hello', { name: 'key' });
+
+        function onMessage(msg) {
+            var str = String(msg);
+            assert.equal(str, 'hello\n');
+
+            sock.close();
+            server.close();
+            assert.end();
+        }
+    });
+});
 
 test('client.counter()', function t(assert) {
     var server = UDPServer({ port: PORT }, function onBound() {
@@ -179,6 +202,40 @@ test('client.counter()', function t(assert) {
             sock.close();
             server.close();
             assert.end();
+        }
+    });
+});
+
+test('DNS resolver will send IP address', function t(assert) {
+    var sock = new EphemeralSocket({
+        host: 'localhost',
+        port: PORT,
+        packetQueue: { flush: 10 },
+
+        dgram: {
+            createSocket: function () {
+                var socket = {};
+                socket.send = function (buf, s, e, port, host) {
+                    var str = String(buf);
+                    assert.equal(str, 'hello\n');
+
+                    assert.ok(isIPv4(host));
+
+                    sock.close();
+                    assert.end();
+                };
+                socket.close = function () {};
+                socket.unref = function () {};
+                socket.once = function () {};
+
+                return socket;
+            }
+        }
+    });
+
+    sock.resolveDNS({
+        onresolved: function () {
+            sock.send('hello', { name: 'key' });
         }
     });
 });
