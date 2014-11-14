@@ -91,7 +91,7 @@ test('can send multiple packets', function t(assert) {
     });
 });
 
-test('socket will close and timeout', function t(assert) {
+test('socket will unref', function t(assert) {
     var server = UDPServer({ port: PORT }, function onBound() {
         var sock = new EphemeralSocket({
             host: 'localhost',
@@ -105,12 +105,6 @@ test('socket will close and timeout', function t(assert) {
         function onMessage(msg) {
             var str = String(msg);
             assert.equal(str, 'hello');
-
-            setTimeout(expectClosed, 50);
-        }
-
-        function expectClosed() {
-            assert.equal(sock._socket, undefined);
 
             server.close();
             assert.end();
