@@ -152,3 +152,39 @@ test('PacketQueue write large buffer', function (assert) {
         called++;
     }
 })
+
+test('PacketQueue without trailing new line', function (assert) {
+    var called = {
+        one: 0,
+        two: 0
+    };
+    var pq = new PacketQueue(send, {
+        flush: 10
+    });
+    var pq2 = new PacketQueue(send2, {
+        flush: 10,
+        trailingNewLine: false
+    })
+
+    pq.write('hello');
+    pq2.write('hello');
+
+    setTimeout(function () {
+        assert.equal(called.one, 1);
+        assert.equal(called.two, 1);
+
+        assert.end();
+        pq.destroy();
+        pq2.destroy();
+    }, 15);
+
+    function send(data, offset, len) {
+        assert.equal(String(data), 'hello\n');
+        called.one++
+    }
+
+    function send2(data, offset, len) {
+        assert.equal(String(data), 'hello');
+        called.two++
+    }
+});
