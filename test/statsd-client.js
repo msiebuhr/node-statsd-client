@@ -61,3 +61,47 @@ test('can write counter to client', function t(assert) {
         });
     });
 });
+
+test('client.counter()', function t(assert) {
+    var server = UDPServer({ port: PORT }, function onBound() {
+        var sock = new StatsDClient({
+            host: 'localhost',
+            port: PORT,
+            packetQueue: { flush: 10 }
+        });
+
+        server.once('message', onMessage);
+        sock.counter('hello', 10);
+
+        function onMessage(msg) {
+            var str = String(msg);
+            assert.equal(str, 'hello:10|c\n');
+
+            sock.close();
+            server.close();
+            assert.end();
+        }
+    });
+});
+
+test('client.gauge()', function t(assert) {
+    var server = UDPServer({ port: PORT }, function onBound() {
+        var sock = new StatsDClient({
+            host: 'localhost',
+            port: PORT,
+            packetQueue: { flush: 10 }
+        });
+
+        server.once('message', onMessage);
+        sock.gauge('hello', 10);
+
+        function onMessage(msg) {
+            var str = String(msg);
+            assert.equal(str, 'hello:10|g');
+
+            sock.close();
+            server.close();
+            assert.end();
+        }
+    });
+});

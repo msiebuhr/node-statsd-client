@@ -4,7 +4,6 @@ var isIPv4 = require('net').isIPv4;
 
 var UDPServer = require('./lib/udp-server.js');
 var EphemeralSocket = require('../lib/EphemeralSocket.js');
-var StatsDClient = require('../lib/statsd-client.js');
 
 var PORT = 8125;
 
@@ -139,28 +138,6 @@ test('writing to a bad host does not blow up', function t(assert) {
     }, 50);
 });
 
-test('client.gauge()', function t(assert) {
-    var server = UDPServer({ port: PORT }, function onBound() {
-        var sock = new StatsDClient({
-            host: 'localhost',
-            port: PORT,
-            packetQueue: { flush: 10 }
-        });
-
-        server.once('message', onMessage);
-        sock.gauge('hello', 10);
-
-        function onMessage(msg) {
-            var str = String(msg);
-            assert.equal(str, 'hello:10|g');
-
-            sock.close();
-            server.close();
-            assert.end();
-        }
-    });
-});
-
 test('can write to socket with DNS resolver', function t(assert) {
     var server = UDPServer({ port: PORT }, function onBound() {
         var sock = new EphemeralSocket({
@@ -176,28 +153,6 @@ test('can write to socket with DNS resolver', function t(assert) {
         function onMessage(msg) {
             var str = String(msg);
             assert.equal(str, 'hello\n');
-
-            sock.close();
-            server.close();
-            assert.end();
-        }
-    });
-});
-
-test('client.counter()', function t(assert) {
-    var server = UDPServer({ port: PORT }, function onBound() {
-        var sock = new StatsDClient({
-            host: 'localhost',
-            port: PORT,
-            packetQueue: { flush: 10 }
-        });
-
-        server.once('message', onMessage);
-        sock.counter('hello', 10);
-
-        function onMessage(msg) {
-            var str = String(msg);
-            assert.equal(str, 'hello:10|c\n');
 
             sock.close();
             server.close();
