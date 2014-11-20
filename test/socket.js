@@ -1,8 +1,9 @@
 var test = require('tape');
-var dgram = require('dgram');
+var setTimeout = require('timers').setTimeout;
+var isIPv4 = require('net').isIPv4;
 
-var EphemeralSocket = require('../lib/EphemeralSocket.js');
-var StatsDClient = require('../lib/statsd-client.js');
+var UDPServer = require('./lib/udp-server.js');
+var EphemeralSocket = require('../lib/EphemeralSocket.js'); 
 
 var PORT = 8125;
 
@@ -29,7 +30,7 @@ test('can write to socket', function t(assert) {
         });
 
         server.once('message', onMessage);
-        sock.send('hello');
+        sock.send('hello', { name: 'key' });
 
         function onMessage(msg) {
             var str = String(msg);
@@ -49,7 +50,7 @@ test('has default ports & hosts', function t(assert) {
         });
 
         server.once('message', onMessage);
-        sock.send('hello');
+        sock.send('hello', { name: 'key' });
 
         function onMessage(msg) {
             var str = String(msg);
@@ -72,9 +73,9 @@ test('can send multiple packets', function t(assert) {
         var messages = '';
 
         server.on('message', onMessage);
-        sock.send('hello');
-        sock.send(' ');
-        sock.send('world');
+        sock.send('hello', { name: 'key' });
+        sock.send(' ', { name: 'key' });
+        sock.send('world', { name: 'key' });
 
         function onMessage(msg) {
             messages += msg;
@@ -104,7 +105,7 @@ test('socket will close and timeout', function t(assert) {
         });
 
         server.once('message', onMessage);
-        sock.send('hello');
+        sock.send('hello', { name: 'key' });
 
         function onMessage(msg) {
             var str = String(msg);
@@ -137,20 +138,21 @@ test('writing to a bad host does not blow up', function t(assert) {
     }, 50);
 });
 
-test('client.gauge()', function t(assert) {
+test('can write to socket with DNS resolver', function t(assert) {
     var server = UDPServer({ port: PORT }, function onBound() {
-        var sock = new StatsDClient({
+        var sock = new EphemeralSocket({
             host: 'localhost',
             port: PORT,
             packetQueue: { flush: 10 }
         });
+        sock.resolveDNS({});
 
         server.once('message', onMessage);
-        sock.gauge('hello', 10);
+        sock.send('hello', { name: 'key' });
 
         function onMessage(msg) {
             var str = String(msg);
-            assert.equal(str, 'hello:10|g');
+            assert.equal(str, 'hello\n');
 
             sock.close();
             server.close();
@@ -159,35 +161,36 @@ test('client.gauge()', function t(assert) {
     });
 });
 
+test('DNS resolver will send IP address', function t(assert) {
+    var sock = new EphemeralSocket({
+        host: 'localhost',
+        port: PORT,
+        packetQueue: { flush: 10 },
 
-test('client.counter()', function t(assert) {
-    var server = UDPServer({ port: PORT }, function onBound() {
-        var sock = new StatsDClient({
-            host: 'localhost',
-            port: PORT,
-            packetQueue: { flush: 10 }
-        });
+        dgram: {
+            createSocket: function () {
+                var socket = {};
+                socket.send = function (buf, s, e, port, host) {
+                    var str = String(buf);
+                    assert.equal(str, 'hello\n');
 
-        server.once('message', onMessage);
-        sock.counter('hello', 10);
+                    assert.ok(isIPv4(host));
 
-        function onMessage(msg) {
-            var str = String(msg);
-            assert.equal(str, 'hello:10|c\n');
+                    sock.close();
+                    assert.end();
+                };
+                socket.close = function () {};
+                socket.unref = function () {};
+                socket.once = function () {};
 
-            sock.close();
-            server.close();
-            assert.end();
+                return socket;
+            }
+        }
+    });
+
+    sock.resolveDNS({
+        onresolved: function () {
+            sock.send('hello', { name: 'key' });
         }
     });
 });
-
-function UDPServer(opts, onBound) {
-    opts = opts || {};
-    var port = opts.port || PORT;
-
-    var server = dgram.createSocket('udp4');
-    server.bind(port, onBound);
-
-    return server;
-}
