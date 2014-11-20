@@ -131,3 +131,24 @@ test('PacketQueue late write', function (assert) {
         assert.equal(data.toString(), 'hello\n');
     }
 });
+
+test('PacketQueue write large buffer', function (assert) {
+    var called = 0;
+    var pq = new PacketQueue(send, {
+        flush: 10, block: 10
+    });
+
+    pq.write('hellohellohello');
+
+    setTimeout(function () {
+        assert.equal(called, 1);
+
+        assert.end();
+        pq.destroy();
+    }, 15);
+
+    function send(buf) {
+        assert.equal(String(buf), 'hellohellohello\n');
+        called++;
+    }
+})
