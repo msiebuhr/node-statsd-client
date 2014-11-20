@@ -3,7 +3,7 @@ var setTimeout = require('timers').setTimeout;
 var isIPv4 = require('net').isIPv4;
 
 var UDPServer = require('./lib/udp-server.js');
-var EphemeralSocket = require('../lib/EphemeralSocket.js');
+var EphemeralSocket = require('../lib/EphemeralSocket.js'); 
 
 var PORT = 8125;
 

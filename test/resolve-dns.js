@@ -36,7 +36,7 @@ test('retries on DNS failures', function t(assert) {
     var resolver = new DNSResolver(REAL_HOST, {
         dns: {
             counter: 0,
-            resolve: function (hostname, cb) {
+            lookup: function (hostname, cb) {
                 var self = this;
                 process.nextTick(function () {
                     if (self.counter === 0) {
@@ -86,7 +86,7 @@ test('can close a DNS resolver after DNS', function t(assert) {
             retries: Infinity
         },
         dns: {
-            resolve: function (host, cb) {
+            lookup: function (host, cb) {
                 process.nextTick(function () {
                     cb(new Error('no'));
 
