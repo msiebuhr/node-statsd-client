@@ -40,7 +40,7 @@ test('PacketQueue', function(assert) {
 })
 
 test('PacketQueue#reset', function(assert) {
-    var pq = new PacketQueue(noop, {block: 10})
+    var pq = new PacketQueue(noop)
     pq.write('foo')
     pq._reset()
 
@@ -108,3 +108,26 @@ test('PacketQueue#write overflow', function(assert) {
         })
     }
 })
+
+test('PacketQueue late write', function (assert) {
+    var called = 0;
+    var pq = new PacketQueue(send, {
+        block: 30, flush: 10
+    });
+
+    setTimeout(function () {
+        assert.equal(called, 0);
+        pq.write('hello');
+
+        setTimeout(function () {
+            assert.equal(called, 1);
+            assert.end();
+            pq.destroy();
+        }, 15);
+    }, 25);
+
+    function send(data, offset, len) {
+        called++;
+        assert.equal(data.toString(), 'hello\n');
+    }
+});
