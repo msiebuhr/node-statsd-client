@@ -32,7 +32,7 @@ test('can write to socket', function t(assert) {
 
         function onMessage(msg) {
             var str = String(msg);
-            assert.equal(str, 'hello');
+            assert.equal(str, 'hello\n');
 
             sock.close();
             server.close();
@@ -52,7 +52,7 @@ test('has default ports & hosts', function t(assert) {
 
         function onMessage(msg) {
             var str = String(msg);
-            assert.equal(str, 'hello');
+            assert.equal(str, 'hello\n');
 
             sock.close();
             server.close();
@@ -78,13 +78,13 @@ test('can send multiple packets', function t(assert) {
         function onMessage(msg) {
             messages += msg;
 
-            if (messages.length === 13) {
+            if (messages.length === 14) {
                 onEnd();
             }
         }
 
         function onEnd() {
-            assert.equal(messages, 'hello\n \nworld');
+            assert.equal(messages, 'hello\n \nworld\n');
 
             sock.close();
             server.close();
@@ -107,7 +107,7 @@ test('socket will close and timeout', function t(assert) {
 
         function onMessage(msg) {
             var str = String(msg);
-            assert.equal(str, 'hello');
+            assert.equal(str, 'hello\n');
 
             setTimeout(expectClosed, 50);
         }

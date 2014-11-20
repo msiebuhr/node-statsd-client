@@ -40,7 +40,7 @@ test('PacketQueue', function(assert) {
 })
 
 test('PacketQueue#reset', function(assert) {
-    var pq = new PacketQueue(noop, {block: 10})
+    var pq = new PacketQueue(noop)
     pq.write('foo')
     pq._reset()
 
@@ -82,7 +82,7 @@ test('PacketQueue#write flush', function(assert) {
 
     function send(data, offset, len) {
         w++
-        assert.deepEquals(data.toString(), '123\n456')
+        assert.deepEquals(data.toString(), '123\n456\n')
         assert.equals(offset, 0)
         assert.equals(len, data.length)
     }
@@ -97,9 +97,9 @@ test('PacketQueue#write overflow', function(assert) {
     pq.write('789')
 
     function send(data, offset, len) {
-        assert.deepEquals(data.toString(), '123\n456')
+        assert.deepEquals(data.toString(), '123\n456\n')
         assert.equals(offset, 0)
-        assert.equals(len, '123456'.length + 1)
+        assert.equals(len, '123456\n'.length + 1)
 
         process.nextTick(function() {
             assert.deepEquals(pq._queue, ['789'])
@@ -108,3 +108,83 @@ test('PacketQueue#write overflow', function(assert) {
         })
     }
 })
+
+test('PacketQueue late write', function (assert) {
+    var called = 0;
+    var pq = new PacketQueue(send, {
+        block: 30, flush: 10
+    });
+
+    setTimeout(function () {
+        assert.equal(called, 0);
+        pq.write('hello');
+
+        setTimeout(function () {
+            assert.equal(called, 1);
+            assert.end();
+            pq.destroy();
+        }, 15);
+    }, 25);
+
+    function send(data, offset, len) {
+        called++;
+        assert.equal(data.toString(), 'hello\n');
+    }
+});
+
+test('PacketQueue write large buffer', function (assert) {
+    var called = 0;
+    var pq = new PacketQueue(send, {
+        flush: 10, block: 10
+    });
+
+    pq.write('hellohellohello');
+
+    setTimeout(function () {
+        assert.equal(called, 1);
+
+        assert.end();
+        pq.destroy();
+    }, 15);
+
+    function send(buf) {
+        assert.equal(String(buf), 'hellohellohello\n');
+        called++;
+    }
+})
+
+test('PacketQueue without trailing new line', function (assert) {
+    var called = {
+        one: 0,
+        two: 0
+    };
+    var pq = new PacketQueue(send, {
+        flush: 10
+    });
+    var pq2 = new PacketQueue(send2, {
+        flush: 10,
+        trailingNewLine: false
+    })
+
+    pq.write('hello');
+    pq2.write('hello');
+
+    setTimeout(function () {
+        assert.equal(called.one, 1);
+        assert.equal(called.two, 1);
+
+        assert.end();
+        pq.destroy();
+        pq2.destroy();
+    }, 15);
+
+    function send(data, offset, len) {
+        assert.equal(String(data), 'hello\n');
+        called.one++
+    }
+
+    function send2(data, offset, len) {
+        assert.equal(String(data), 'hello');
+        called.two++
+    }
+});
