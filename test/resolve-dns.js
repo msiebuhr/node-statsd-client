@@ -152,18 +152,16 @@ test('Calls dns.resolve on interval', function t(assert) {
                 process.nextTick(function () {
                     counter++;
                     cb(null, '0.0.0.' + counter);
-
-                    if (counter === 3) {
-                        close();
-                    }
                 });
             }
         }
     });
 
     resolver.lookupHost();
+    setTimeout(close, 250);
 
     function close() {
+        assert.equal(counter, 3);
         var hostname = resolver.resolveHost('some-key');
         assert.equal(hostname, '0.0.0.3');
         
