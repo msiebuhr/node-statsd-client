@@ -1,38 +1,144 @@
-node-statsd-client
-==================
+# node-statsd-client
 
 Node.js client for [statsd](https://github.com/etsy/statsd).
 
-Quick tour
-----------
+## Example
 
-    var sdc = new require('statsd-client')({host: 'statsd.example.com'});
+```js
+var Statsd = require('statsd-client');
 
-	var timer = new Date();
-	sdc.increment('some.counter'); // Increment by one.
-	sdc.gauge('some.gauge', 10); // Set gauge to 10
-	sdc.timing('some.timer', timer); // Calculates time diff
+var sdc = new Statsd({
+    host: 'statsd.example.com'
+});
 
-	sdc.close(); // Optional - stop NOW
+var timer = new Date();
+sdc.increment('some.counter'); // Increment by one.
+sdc.gauge('some.gauge', 10); // Set gauge to 10
+sdc.timing('some.timer', timer); // Calculates time diff
 
-API
----
+sdc.close(); // Optional - stop NOW
+```
 
-### Initialization
+## Docs
 
-    var SDC = require('statsd-client'),
-        sdc = new SDC({host: 'statsd.example.com', port: 8124, debug: true});
+```js
+var SDC = require('statsd-client')
+var sdc = new SDC({
+    host: 'statsd.example.com',
+    port: 8124
+});
+```
 
 Available options:
 
- * `host`: Where to send the stats (default `localhost`).
- * `debug`: Print what is being sent to stderr (default `false`).
- * `port`: Port to contact the statsd-daemon on (default `8125`).
- * `prefix`: Prefix all stats with this value (default `""`).
- * `socket_timeout`: Auto-closes the socket after this long without activity
-   (default 1000 ms; 0 disables this).
- * `highWaterMark`: The maximum number of udp messges buffered in
-    case DNS lookup takes too long. default to 100
+### `options.prefix`
+
+type: `String`, default: `""`
+
+Prefix all stats written by the client with a particular string
+    prefix value. This defaults to `""`
+
+### `options.host`
+
+type: `String`, default: `""`
+
+The hostname where stats should be send. Defaults to
+    `"localhost"`
+
+### `options.port`
+
+type: `Number`, default: `8125`
+
+The port where stats should be send. Defaults to `8125`
+
+### `options.socket_timeout`
+
+type: `Number`, default: `1000`
+
+The UDP socket will auto-close if it has not been written to
+    within the socket_timeout period. Defaults to `1000`
+    milliseconds.
+
+If `socket_timeout` is set to `0` then the UDP socket will never
+    auto close.
+
+### `options.highWaterMark`
+
+type: `Number`, default: `100`
+
+The UDP socket implementation has an internal `highWaterMark`.
+    There is a known issue in node core where it will buffer
+    packets being written to the UDP socket if it's currently
+    in the "resolving DNS host" state.
+
+When the `highWaterMark` is reached all packets are dropped
+    and ignored.
+
+### `options.packetQueue`
+
+```ocaml
+{
+    block?: Number,
+    flush?: Number,
+    trailingNewLine?: Boolean
+}
+```
+
+The UDP socket uses an internal packet queue that can be
+    configured.
+
+The semantics of the packet queue is that it will write to
+    the UDP socket if it has buffered at least `block` amount
+    of bytes OR it has elapsed at least `flush` amount of
+    milliseconds.
+
+By default the packet queue will join multiple messages with
+    a new line. It will also append a trailing new line,
+    however you can opt out of the trailing new line by setting
+    `trailingNewLine` field to `false`.
+
+The `block` field defaults to `1440` bytes.
+The `flush` field defaults to `1000` milliseconds.
+The `trailingNewLine` field defaults to `true`.
+
+### `options.dnsResolver`
+
+```ocaml
+{
+    timeToLive?: Number,
+    seedIP?: String,
+    backoffSettings?: {
+        maxDelay?: Number,
+        minDelay?: Number,
+        retries?: Number,
+        factor?: Number
+    }
+}
+```
+
+The UDP socket will optionally use a DNS resolver to resolve
+    DNS once instead of resolving it for every UDP packet
+    being written.
+
+It's strongly recommended you use the DNS resolver.
+
+The DNS resolver will resolve its DNS lookup based on the
+    configured `timeToLive`. i.e. it caches the DNS host for
+    at least that amount of time.
+
+The DNS resolver takes a `seedIP` value, this is used when
+    it cannot resolve DNS due to DNS failures and will fallback
+    to the static IP you gave it.
+
+The DNS resolver retries DNS lookups on DNS failures based on
+    the `backoffSettings` you supply.
+
+The `timeToLive` field defaults to five minutes (in milliseconds)
+The `seedIP` field has no default.
+The `backoffSettings.maxDelay` field defaults to `Infinity`
+The `backoffSettings.minDelay` field defaults to `500` milliseconds
+The `backoffSettings.retries` field defaults to `10` retries
+The `backoffSettings.factor` field defaults to `2`.
 
 ### Counting stuff
 
@@ -64,28 +170,6 @@ will be passed straight through.
 And don't let the name (or nifty interface) fool you - it can measure any kind
 of number, where you want to see the distribution (content lengths, list items,
 query sizes, ...)
-
-### Stream helpers
-
-There is some helpers for measuring what's going though streams:
-
-    var sdc = new StatsDClient({...});
-
-	var source = fs.createReadStream('some_file.txt'),
-		dest = fs.createWriteStream('/dev/null');
-
-	// Option 1: Attach hooks directly to a stream (most effeicient)
-	sdc.measureStreamSize('key_for_counter', source);
-
-	// Option 2: Pipe through proxy-stream with hooks attached
-	source
-	    .pipe(sdc.measureStreamLatency('key_for_timer'))
-		.pipe(dest);
-
-This will both measure the amount of data sent through the system
-(`.measureStreamSize(key, [stream])`) and how long it takes to get i through
-(`.measureStreamLatency(key, [stream])`). It is also possible to measure the
-total bandwith of the stream using `.measureStreamBandwidth(key, [stream])`.
 
 ### Stopping gracefully
 

@@ -1,0 +1,34 @@
+type StatsDClient : {
+    gauge: (name: String, value: Number) => void,
+    counter: (name: String, value: Number) => void,
+    increment: (name: String, delta?: Number) => void,
+    decrement: (name: String, delta?: Number) => void,
+    timing: (name: String, time: Number) => void,
+    close: () => void
+}
+
+-- Given a set of options returns a statsd client.
+statsd-client : ({
+    prefix?: String,
+
+    host?: String,
+    port?: Number,
+    socket_timeout?: Number,
+    highWaterMark?: Number,
+
+    packetQueue?: {
+        block?: Number,
+        flush?: Number,
+        trailingNewLine?: Boolean
+    },
+    dnsResolver?: {
+        timeToLive?: Number,
+        seedIP?: String,
+        backoffSettings?: {
+            maxDelay?: Number,
+            minDelay?: Number,
+            retries?: Number,
+            factor?: Number
+        }
+    }
+}) => StatsDClient
