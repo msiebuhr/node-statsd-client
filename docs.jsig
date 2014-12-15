@@ -8,7 +8,7 @@ type StatsDClient : {
 }
 
 -- Given a set of options returns a statsd client.
-statsd-client : ({
+uber-statsd-client : ({
     prefix?: String,
 
     host?: String,

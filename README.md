@@ -1,11 +1,11 @@
-# node-statsd-client
+# uber-statsd-client
 
 Node.js client for [statsd](https://github.com/etsy/statsd).
 
 ## Example
 
 ```js
-var Statsd = require('statsd-client');
+var Statsd = require('uber-statsd-client');
 
 var sdc = new Statsd({
     host: 'statsd.example.com'
@@ -22,7 +22,7 @@ sdc.close(); // Optional - stop NOW
 ## Docs
 
 ```js
-var SDC = require('statsd-client')
+var SDC = require('uber-statsd-client')
 var sdc = new SDC({
     host: 'statsd.example.com',
     port: 8124
@@ -212,10 +212,10 @@ will allow the entire program to stop gracefully.
 What's broken
 -------------
 
-Check the [GitHub issues](https://github.com/msiebuhr/node-statsd-client/issues).
+Check the [GitHub issues](https://github.com/uber/node-statsd-client/issues).
 
 LICENSE
 -------
 
 ISC - see
-[LICENSE.txt](https://github.com/msiebuhr/node-statsd-client/blob/master/LICENSE.txt).
+[LICENSE.txt](https://github.com/uber/node-statsd-client/blob/master/LICENSE.txt).

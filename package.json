@@ -1,6 +1,6 @@
 {
   "author": "Morten Siebuhr <sbhr@sbhr.dk>",
-  "name": "statsd-client",
+  "name": "uber-statsd-client",
   "description": "Yet another client for Etsy's statsd",
   "keywords": [
     "statsd",
@@ -9,11 +9,11 @@
     "udp"
   ],
   "version": "0.0.4",
-  "homepage": "https://github.com/msiebuhr/node-statsd-client",
-  "bugs": "https://github.com/msiebuhr/node-statsd-client/issues",
+  "homepage": "https://github.com/uber/node-statsd-client",
+  "bugs": "https://github.com/uber/node-statsd-client/issues",
   "repository": {
     "type": "git",
-    "url": "git://github.com/msiebuhr/node-statsd-client.git"
+    "url": "git://github.com/uber/node-statsd-client.git"
   },
   "main": "lib/statsd-client.js",
   "scripts": {
