@@ -1,4 +1,5 @@
 var test = require('tape');
+var setTimeout = require('timers').setTimeout;
 
 var UDPServer = require('./lib/udp-server.js');
 var StatsDClient = require('../lib/statsd-client.js');
@@ -23,6 +24,57 @@ test('can write gauge to client', function t(assert) {
         });
     });
 });
+
+test('respects isDisabled', function t(assert) {
+    var isDisabledBool = false;
+    var server = UDPServer({ port: PORT }, function onBound() {
+        var client = new StatsDClient({
+            host: 'localhost',
+            port: PORT,
+            packetQueue: { flush: 10 },
+            isDisabled: function isDisabled() {
+                return isDisabledBool;
+            }
+        });
+
+        server.once('message', onMessage);
+        client.counter('foo', 1);
+
+        function onMessage(msg) {
+            assert.equal(msg.toString(), 'foo:1|c\n');
+
+            isDisabledBool = true;
+            server.on('message', failure);
+            client.counter('foo', 1);
+
+            setTimeout(next, 100);
+
+            function failure() {
+                assert.ok(false, 'unexpected message');
+            }
+
+            function next() {
+                isDisabledBool = false;
+                server.removeListener('message', failure);
+
+                server.once('message', onMessage2);
+                client.counter('foo', 1);
+            }
+
+            function onMessage2(msg) {
+                assert.ok(String(msg));
+
+                end();
+            }
+        }
+
+        function end() {
+            client.close();
+            server.close();
+            assert.end();
+        }
+    });
+})
 
 test('can write timing to client', function t(assert) {
     var server = UDPServer({ port: PORT }, function onBound() {
