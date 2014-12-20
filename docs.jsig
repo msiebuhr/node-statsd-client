@@ -15,6 +15,7 @@ uber-statsd-client : ({
     port?: Number,
     socket_timeout?: Number,
     highWaterMark?: Number,
+    isDisabled?: () => Boolean,
 
     packetQueue?: {
         block?: Number,

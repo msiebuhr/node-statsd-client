@@ -140,6 +140,15 @@ The `backoffSettings.minDelay` field defaults to `500` milliseconds
 The `backoffSettings.retries` field defaults to `10` retries
 The `backoffSettings.factor` field defaults to `2`.
 
+### `options.isDisabled`
+
+`isDisabled` is an optional predicate function. You can pass in
+    a predicate function that allows you to disabled the statsd
+    client at run time.
+
+When this predicate function returns `true` the `EphemeralSocket`
+    will stop writing to the statsd UDP server.
+
 ### Counting stuff
 
 Counters are supported, both as raw `.counter(metric, delta)` and with the

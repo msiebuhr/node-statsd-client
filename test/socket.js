@@ -43,6 +43,58 @@ test('can write to socket', function t(assert) {
     });
 });
 
+test('respects isDisabled', function t(assert) {
+    var isDisabledBool = false;
+    var server = UDPServer({ port: PORT }, function onBound() {
+        var sock = new EphemeralSocket({
+            host: 'localhost',
+            port: PORT,
+            packetQueue: { flush: 10 },
+            isDisabled: function isDisabled() {
+                return isDisabledBool;
+            }
+        });
+
+        server.once('message', onMessage);
+        sock.send('hello');
+
+        function onMessage(msg) {
+            var str = String(msg);
+            assert.equal(str, 'hello\n');
+
+            isDisabledBool = true;
+            server.on('message', failure);
+            sock.send('hello');
+
+            setTimeout(next, 100);
+
+            function failure() {
+                assert.ok(false, 'unexpected message');
+            }
+
+            function next() {
+                isDisabledBool = false;
+                server.removeListener('message', failure);
+
+                server.once('message', onMessage2);
+                sock.send('hello');
+            }
+
+            function onMessage2(msg) {
+                assert.ok(String(msg));
+
+                end();
+            }
+        }
+
+        function end() {
+            sock.close();
+            server.close();
+            assert.end();
+        }
+    });
+});
+
 test('has default ports & hosts', function t(assert) {
     var server = UDPServer({ port: PORT }, function onBound() {
         var sock = new EphemeralSocket();
