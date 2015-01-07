@@ -153,7 +153,7 @@ making sane name-spacing in apps:
 
 ```javascript
 // Create generic client
-var sdc = new StatsDClient({host: 'statsd.example.com', prefix: 'systemname');
+var sdc = new StatsDClient({host: 'statsd.example.com', prefix: 'systemname'});
 sdc.increment('foo'); // Increments 'systemname.foo'
 ... do great stuff ...
 
