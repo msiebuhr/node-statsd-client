@@ -31,6 +31,12 @@ describe('EphemeralSocket', function () {
         }, 25);
     });
 
+
+    it("Convert the port to integer", function () {
+        var testSocket = new EphemeralSocket({port: "1234"});
+        assert.strictEqual(testSocket._port, 1234);
+    });
+
     it("Sends data immediately with maxBufferSize = 0", function (done) {
         var withoutBuffer = new EphemeralSocket({maxBufferSize: 0}),
             start = Date.now();
