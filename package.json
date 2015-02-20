@@ -23,6 +23,7 @@
   },
   "dependencies": {
     "back": "^0.1.5",
+    "ringbufferjs": "0.0.1",
     "xtend": "^4.0.0"
   },
   "devDependencies": {
