@@ -33,3 +33,5 @@ uber-statsd-client : ({
         }
     }
 }) => StatsDClient
+
+uber-statsd-client/null : (capacity?: Number) => StatsDClient
