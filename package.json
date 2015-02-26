@@ -8,7 +8,7 @@
     "metrics",
     "udp"
   ],
-  "version": "0.0.17",
+  "version": "0.0.18",
   "homepage": "https://github.com/msiebuhr/node-statsd-client",
   "bugs": "https://github.com/msiebuhr/node-statsd-client/issues",
   "repository": {
