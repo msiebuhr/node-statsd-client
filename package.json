@@ -6,7 +6,8 @@
     "statsd",
     "client",
     "metrics",
-    "udp"
+    "udp",
+    "tcp"
   ],
   "version": "0.0.18",
   "homepage": "https://github.com/msiebuhr/node-statsd-client",
