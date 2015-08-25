@@ -87,6 +87,13 @@ describe('StatsDClient', function () {
         });
     });
 
+    describe('Histograms', function () {
+        it('.histogram("foo", 10) → "foo:10|h', function (done) {
+            c.histogram('foo', 10);
+            s.expectMessage('foo:10|h', done);
+        });
+    });
+
     describe('Timers', function () {
         it('.timing("foo", 10) → "foo:10|ms', function (done) {
             c.timing('foo', 10);
