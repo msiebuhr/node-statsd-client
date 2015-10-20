@@ -132,6 +132,8 @@ As the names can become rather odd in corner-cases (esp. regexes and non-REST
 interfaces), you can specify another value by setting `res.locals.statsdUrlKey`
 at a later point.
 
+The `/` page will appear as `root` (e.g. `GET_root`) in metrics while any not found route will appear as `{METHOD}_unknown_express_route`. You can change that name by setting the `notFoundRouteName` in the middleware options.
+
 ### Stopping gracefully
 
 By default, the socket is closed if it hasn't been used for a second (see
