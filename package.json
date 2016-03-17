@@ -29,5 +29,6 @@
   "scripts": {
     "test": "mocha -R spec; jshint lib/ test/"
   },
+  "license": "MIT",
   "optionalDependencies": {}
 }
