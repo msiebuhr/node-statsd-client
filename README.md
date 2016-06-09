@@ -106,8 +106,9 @@ There's also a helper for measuring stuff in [Express.js](http://expressjs.com)
 via middleware:
 
 ```javascript
+var SDC = require('statsd-client');
 var app = express();
-	sdc = new StatsDClient({...});
+	sdc = new SDC({...});
 
 app.use(sdc.helpers.getExpressMiddleware('somePrefix'));
 // or
