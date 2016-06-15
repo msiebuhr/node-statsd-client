@@ -123,41 +123,41 @@ describe('StatsDClient', function () {
     });
 
     describe('Chaining', function() {
-      it('.gauge() chains', function() {
-        assert.equal(c, c.gauge('x', 'y'));
-      });
+        it('.gauge() chains', function() {
+            assert.equal(c, c.gauge('x', 'y'));
+        });
 
-      it('.gaugeDelta() chains', function() {
-        assert.equal(c, c.gaugeDelta('x', 'y'));
-      });
+        it('.gaugeDelta() chains', function() {
+            assert.equal(c, c.gaugeDelta('x', 'y'));
+        });
 
-      it('.set() chains', function() {
-        assert.equal(c, c.set('x', 'y'));
-      });
+        it('.set() chains', function() {
+            assert.equal(c, c.set('x', 'y'));
+        });
 
-      it('.counter() chains', function() {
-        assert.equal(c, c.counter('x', 'y'));
-      });
+        it('.counter() chains', function() {
+            assert.equal(c, c.counter('x', 'y'));
+        });
 
-      it('.increment() chains', function() {
-        assert.equal(c, c.increment('x', 'y'));
-      });
+        it('.increment() chains', function() {
+            assert.equal(c, c.increment('x', 'y'));
+        });
 
-      it('.decrement() chains', function() {
-        assert.equal(c, c.decrement('x', 'y'));
-      });
+        it('.decrement() chains', function() {
+            assert.equal(c, c.decrement('x', 'y'));
+        });
 
-      it('.timing() chains', function() {
-        assert.equal(c, c.timing('x', 'y'));
-      });
+        it('.timing() chains', function() {
+            assert.equal(c, c.timing('x', 'y'));
+        });
 
-      it('.histogram() chains', function() {
-        assert.equal(c, c.histogram('x', 'y'));
-      });
+        it('.histogram() chains', function() {
+            assert.equal(c, c.histogram('x', 'y'));
+        });
 
-      it('.close() chains', function() {
-        assert.equal(c, c.close('x', 'y'));
-      });
+        it('.close() chains', function() {
+            assert.equal(c, c.close('x', 'y'));
+        });
     });
 });
 
