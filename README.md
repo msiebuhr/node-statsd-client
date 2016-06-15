@@ -100,6 +100,13 @@ And don't let the name (or nifty interface) fool you - it can measure any kind
 of number, where you want to see the distribution (content lengths, list items,
 query sizes, ...)
 
+### Histogram
+
+Many implementations (though not the official one from Etsy) support
+histograms as an alias/alternative for timers. So aside from the fancy bits
+with handling dates, this is much the same as `.timing()`.
+
+
 ### Express helper
 
 There's also a helper for measuring stuff in [Express.js](http://expressjs.com)
