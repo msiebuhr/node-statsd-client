@@ -107,6 +107,16 @@ histograms as an alias/alternative for timers. So aside from the fancy bits
 with handling dates, this is much the same as `.timing()`.
 
 
+### Raw
+
+Passes a raw string to the underlying socket. Useful for dealing with custom
+statsd-extensions in a pinch.
+
+```javascript
+sdc.raw('foo.bar:123|t|@0.5|#key:value');
+```
+
+
 ### Express helper
 
 There's also a helper for measuring stuff in [Express.js](http://expressjs.com)
