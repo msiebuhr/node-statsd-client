@@ -122,6 +122,13 @@ describe('StatsDClient', function () {
         });
     });
 
+    describe('Raw', function () {
+        it('.raw("foo.bar#123") → "foo.bar#123"', function (done) {
+            c.raw('foo.bar#123');
+            s.expectMessage('foo.bar#123', done);
+        });
+    });
+
     describe('Chaining', function() {
         it('.gauge() chains', function() {
             assert.equal(c, c.gauge('x', 'y'));
@@ -153,6 +160,10 @@ describe('StatsDClient', function () {
 
         it('.histogram() chains', function() {
             assert.equal(c, c.histogram('x', 'y'));
+        });
+
+        it('.raw() chains', function () {
+            assert.equal(c, c.raw('foo'));
         });
 
         it('.close() chains', function() {
