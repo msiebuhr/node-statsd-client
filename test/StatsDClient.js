@@ -61,6 +61,16 @@ describe('StatsDClient', function () {
             c.decrement('abc', -3);
             s.expectMessage('abc:-3|c', done);
         });
+
+        it('.counter("abc", 0) → "abc:0|c', function (done) {
+            c.counter('abc', 0);
+            s.expectMessage('abc:0|c', done);
+        });
+
+        it('.decrement("abc", 0) → "abc:0|c', function (done) {
+            c.decrement('abc', 0);
+            s.expectMessage('abc:0|c', done);
+        });
     });
 
     describe('Gauges', function () {
