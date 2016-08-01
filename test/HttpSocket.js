@@ -9,13 +9,14 @@ var HttpSocket = require('../lib/HttpSocket'),
 /*global describe before it after*/
 
 describe('HttpSocket', function () {
-    var s, e, messages;
+    var s, e, messages, lastHeaders;
 
     before(function (done) {
         e = new HttpSocket({ host: 'http://localhost:8125' });
-
+        lastHeaders = null;
         messages = new MessageCollector();
         s = http.createServer(function (req, res) {
+            lastHeaders = req.headers;
             req.setEncoding('ascii');
             var m = '';
             req.on('data', function (data) {
@@ -65,6 +66,19 @@ describe('HttpSocket', function () {
         messages.expectMessage('buffer_this', function (err) {
             assert.operator(Date.now() - start, '>=', 25);
             withBuffer.close();
+            done(err);
+        });
+    });
+
+    it("Sends headers", function (done) {
+        var headers = {'X-Test': 'Test'};
+        var withHeaders = new HttpSocket({headers: headers, host: 'http://localhost:8125'});
+        withHeaders.send('no heders kthxbai');
+        messages.expectMessage('no heders kthxbai', function (err) {
+            assert.isNotNull(lastHeaders);
+            console.error(lastHeaders);
+            assert.equal(lastHeaders['x-test'], 'Test');
+            withHeaders.close();
             done(err);
         });
     });
