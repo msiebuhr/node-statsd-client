@@ -92,7 +92,7 @@ describe('Helpers', function () {
             .expect(200)
             .end(function (err, res) {
               if (err) return done(err);
-              s.expectMessage('express.response_code.200:1|c', done);
+              s.expectMessage('express.response_code.GET_root.200:1|c', done);
             });
         });
 
