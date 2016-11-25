@@ -9,7 +9,7 @@
     "udp",
     "tcp"
   ],
-  "version": "0.2.3",
+  "version": "0.2.4",
   "homepage": "https://github.com/msiebuhr/node-statsd-client",
   "bugs": "https://github.com/msiebuhr/node-statsd-client/issues",
   "repository": {
