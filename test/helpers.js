@@ -103,8 +103,8 @@ describe('Helpers', function () {
             .end(function (err, res) {
               if (err) return done(err);
               s.expectMessage('express.response_code.GET_root.200:1|c', done);
-            })
-        })
+            });
+        });
 
         it('/ → "GET_root"', function (done) {
           supertest(baseUrl)
