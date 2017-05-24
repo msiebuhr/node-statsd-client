@@ -132,6 +132,19 @@ describe('StatsDClient', function () {
         });
     });
 
+    describe('Tags', function () {
+        it('.histogram("foo", 10) with tags {"test":"tag","other":"tag"} → "foo:10|h|#test:tag,other:tag"', function (done) {
+          new StatsDClient({
+              maxBufferSize: 0,
+              tags: {
+                test: 'tag',
+                other: 'tag'
+              }
+          }).histogram('foo', 10);
+            s.expectMessage('foo:10|h|#test:tag,other:tag', done);
+        });
+    });
+
     describe('Raw', function () {
         it('.raw("foo.bar#123") → "foo.bar#123"', function (done) {
             c.raw('foo.bar#123');
