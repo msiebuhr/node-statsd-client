@@ -44,7 +44,7 @@ describe('EphemeralSocket', function () {
         withoutBuffer.send('do_not_buffer');
 
         s.expectMessage('do_not_buffer', function (err) {
-            assert.closeTo(Date.now() - start, 0, 5);
+            assert.closeTo(Date.now() - start, 0, 20);
             withoutBuffer.close();
             done(err);
         });
