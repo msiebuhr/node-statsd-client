@@ -33,6 +33,10 @@ describe('Helpers', function () {
             res.sendStatus(200);
         });
 
+        app.get(['/foo', '/bar'], function (req, res) {
+            res.sendStatus(200);
+        });
+
         app.post('/foo', function (req, res) {
             res.sendStatus(200);
         });
