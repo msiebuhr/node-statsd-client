@@ -33,7 +33,7 @@ describe('Helpers', function () {
             res.sendStatus(200);
         });
 
-        app.get(['/foo', '/bar'], function (req, res) {
+        app.get(['/bar', '/baz'], function (req, res) {
             res.sendStatus(200);
         });
 
@@ -127,6 +127,16 @@ describe('Helpers', function () {
             .end(function (err, res) {
               if (err) return done(err);
               s.expectMessage('express.response_time.GET_foo:0|ms', done);
+            });
+        });
+
+        it('/baz → "GET_baz"', function (done) {
+          supertest(baseUrl)
+            .get('/baz')
+            .expect(200)
+            .end(function (err, res) {
+              if (err) return done(err);
+              s.expectMessage('express.response_time.GET_baz:0|ms', done);
             });
         });
 
