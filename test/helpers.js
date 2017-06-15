@@ -45,6 +45,10 @@ describe('Helpers', function () {
             res.sendStatus(200);
         });
 
+        app.get(/\/abc|\/xyz/, function (req, res, next) {
+            res.sendStatus(200);
+        });
+
         // Routes defined on the a subrouter or "micro-app".
         var router = express.Router();
 
@@ -147,6 +151,16 @@ describe('Helpers', function () {
             .end(function (err, res) {
               if (err) return done(err);
               s.expectMessage('express.response_time.GET_foo_param_bar:0|ms', done);
+            });
+        });
+
+        it('/xyz → "GET_xyz"', function (done) {
+          supertest(baseUrl)
+            .get('/xyz')
+            .expect(200)
+            .end(function (err, res) {
+              if (err) return done(err);
+              s.expectMessage('express.response_time.GET_xyz:0|ms', done);
             });
         });
 
