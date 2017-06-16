@@ -1,6 +1,7 @@
 /* A small fake UDP-server.
  */
 var dgram = require('dgram');
+var debug = require('util').debuglog('fakeserver');
 
 function FakeServer(options) {
     options = options || {};
@@ -18,7 +19,7 @@ FakeServer.prototype.start = function (cb) {
     this._socket = dgram.createSocket('udp4');
 
     this._socket.on('message', function (msg, rinfo) {
-        //console.warn("Server got: '" + msg.toString() + "'");
+        debug("Server got: '" + msg.toString() + "'");
         msg.toString().split("\n").forEach(function (part) {
             that._packetsReceived.push(part);
         });

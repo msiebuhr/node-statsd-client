@@ -45,7 +45,7 @@ describe('Helpers', function () {
             res.sendStatus(200);
         });
 
-        app.get(/\/abc|\/xyz/, function (req, res, next) {
+        app.get(/\/rege./, function (req, res) {
             res.sendStatus(200);
         });
 
@@ -154,13 +154,13 @@ describe('Helpers', function () {
             });
         });
 
-        it('/xyz → "GET_xyz"', function (done) {
+        it('/rege.+ → "GET_rege_"', function (done) {
           supertest(baseUrl)
-            .get('/xyz')
+            .get('/regeX')
             .expect(200)
             .end(function (err, res) {
               if (err) return done(err);
-              s.expectMessage('express.response_time.GET_xyz:0|ms', done);
+              s.expectMessage('express.response_time.GET_\\_rege.:0|ms', done);
             });
         });
 
