@@ -16,6 +16,7 @@ var timer = new Date();
 sdc.increment('some.counter'); // Increment by one.
 sdc.gauge('some.gauge', 10); // Set gauge to 10
 sdc.timing('some.timer', timer); // Calculates time diff
+sdc.histogram('some.histogram', 10, {foo: 'bar'}) // Histogram with tags
 
 sdc.close(); // Optional - stop NOW
 ```
@@ -117,6 +118,14 @@ statsd-extensions in a pinch.
 sdc.raw('foo.bar:123|t|@0.5|#key:value');
 ```
 
+### Tags
+
+All the methods above support metric level tags as their last argument. Just like global tags, the format for metric tags is an object of string key/value pairs.
+Tags at the metric level overwrite global tags with the same key.
+
+```javascript
+sdc.gauge('gauge.with.tags', 100, {foo: 'bar'});
+```
 
 ### Express helper
 
