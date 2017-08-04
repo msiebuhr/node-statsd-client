@@ -39,6 +39,8 @@ Global options:
    it auto-closes the socket after this long without activity (default 1000 ms;
    0 disables this). For TCP, it auto-closes the socket after `socketTimeoutsToClose` number of timeouts have elapsed without activity.
  * `tags`: Object of string key/value pairs which will be appended on to all StatsD payloads (excluding raw payloads) (default `{}`)
+ * `influxdbTags: Boolean, if true the tags are formated in a form `name,tag1=a,tag2=b|value|ms`
+   rather than `name:value|ms|#tag1:a,tag2:b` (default false)`
 
 UDP options:
  * `host`: Where to send the stats (default `localhost`).

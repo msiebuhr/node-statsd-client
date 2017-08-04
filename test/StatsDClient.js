@@ -161,6 +161,48 @@ describe('StatsDClient', function () {
             s.expectMessage('foo:10|g|#global:tag,other:metric,metric:tag', done);
           });
         });
+
+        context('with InfluxDB formatted tags', function() {
+          beforeEach(function() {
+            c.options.influxdbTags = true;
+          });
+
+          afterEach(function() {
+            c.options.influxdbTags = false;
+          });
+
+          it('.histogram("foo", 10) with global tags {"test":"tag","other":"tag"} → "foo,test=tag,other=tag:10|h"', function (done) {
+            new StatsDClient({
+                maxBufferSize: 0,
+                influxdbTags: true,
+                tags: {
+                  test: 'tag',
+                  other: 'tag'
+                }
+            }).histogram('foo', 10);
+              s.expectMessage('foo,test=tag,other=tag:10|h', done);
+          });
+
+          it('.histogram("foo", 10) with metric tags {"test":"tag","other":"tag"} → "foo,test=tag,other=tag:10|h"', function (done) {
+            c.histogram('foo', 10, { test: 'tag', other: 'tag'});
+            s.expectMessage('foo,test=tag,other=tag:10|h', done);
+          });
+
+          describe('metrics tags overwrite global tags', function () {
+            it('.gauge("foo", 10, {tags}) with global tags → "foo,global=tag,other=metric,metric=tag:10|g"', function (done) {
+              new StatsDClient({
+                maxBufferSize: 0,
+                influxdbTags: true,
+                tags: {
+                  global: 'tag',
+                  other: 'tag'
+                }
+              }).gauge('foo', 10, {other: 'metric', metric: 'tag'});
+              s.expectMessage('foo,global=tag,other=metric,metric=tag:10|g', done);
+            });
+          });
+        });
+
     });
 
     describe('Raw', function () {

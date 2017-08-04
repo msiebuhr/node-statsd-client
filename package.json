@@ -1,5 +1,6 @@
 {
-  "author": "Morten Siebuhr <sbhr@sbhr.dk>",
+  "author": "Mortencontributors Siebuhr <sbhr@sbhr.dk>",
+  "contributors": ["Nick Chistyakov <nick@6river.com>"],
   "name": "statsd-client",
   "description": "Yet another client for Etsy's statsd",
   "keywords": [
@@ -9,7 +10,7 @@
     "udp",
     "tcp"
   ],
-  "version": "0.4.0",
+  "version": "0.4.1",
   "homepage": "https://github.com/msiebuhr/node-statsd-client",
   "bugs": "https://github.com/msiebuhr/node-statsd-client/issues",
   "repository": {
