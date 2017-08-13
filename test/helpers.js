@@ -49,7 +49,7 @@ describe('Helpers', function () {
             res.sendStatus(200);
         });
 
-        app.get(['/abcd', '/xyza', /\/lmn|\/pqr/], function (req, res, next) {
+        app.get(['/abcd', '/xyza', /\/ragefoo./], function (req, res, next) {
             res.sendStatus(200);
         });
 
@@ -138,7 +138,7 @@ describe('Helpers', function () {
             });
         });
 
-        it('/baz → "GET_baz"', function (done) {
+        it('/baz → "GET_baz - tests route defined in array"', function (done) {
           supertest(baseUrl)
             .get('/baz')
             .expect(200)
@@ -158,23 +158,23 @@ describe('Helpers', function () {
             });
         });
 
-        it('/lmn → "GET_lmn"', function (done) {
-          supertest(baseUrl)
-            .get('/lmn')
-            .expect(200)
-            .end(function (err, res) {
-              if (err) return done(err);
-              s.expectMessage('express.response_time.GET_xyz:0|ms', done);
-            });
-        });
-
-        it('/rege.+ → "GET_rege_"', function (done) {
+        it('/rege.+ → "GET_rege_ - tests route defined as regex"', function (done) {
           supertest(baseUrl)
             .get('/regeX')
             .expect(200)
             .end(function (err, res) {
               if (err) return done(err);
               s.expectMessage('express.response_time.GET_\\_rege.:0|ms', done);
+            });
+        });
+
+        it('/ragefoo.+ → "GET_ragefoo_ - tests route defined as regex in an array"', function (done) {
+          supertest(baseUrl)
+            .get('/ragefoobar')
+            .expect(200)
+            .end(function (err, res) {
+              if (err) return done(err);
+              s.expectMessage('express.response_time.GET_\\_ragefoo.:0|ms', done);
             });
         });
 
