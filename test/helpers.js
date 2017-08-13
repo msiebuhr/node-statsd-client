@@ -48,6 +48,10 @@ describe('Helpers', function () {
         app.get(/\/abc|\/xyz/, function (req, res, next) {
             res.sendStatus(200);
         });
+    
+        app.get(['/abcd', '/xyza', /\/lmn|\/pqr/], function (req, res, next) {
+            res.sendStatus(200);
+        });
 
         // Routes defined on the a subrouter or "micro-app".
         var router = express.Router();
@@ -154,7 +158,17 @@ describe('Helpers', function () {
             });
         });
 
-        it('/xyz → "GET_xyz"', function (done) {
+        it('/lmn → "GET_lmn"', function (done) {
+          supertest(baseUrl)
+            .get('/lmn')
+            .expect(200)
+            .end(function (err, res) {
+              if (err) return done(err);
+              s.expectMessage('express.response_time.GET_xyz:0|ms', done);
+            });
+        });
+
+        it('/ → "GET_xyz"', function (done) {
           supertest(baseUrl)
             .get('/xyz')
             .expect(200)
