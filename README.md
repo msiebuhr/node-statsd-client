@@ -162,6 +162,40 @@ at a later point.
 
 The `/` page will appear as `root` (e.g. `GET_root`) in metrics while any not found route will appear as `{METHOD}_unknown_express_route`. You can change that name by setting the `notFoundRouteName` in the middleware options.
 
+
+### Callback helper
+
+There's also a helper for measuring stuff with regards to a callback:
+
+```javascript
+var SDC = requrire('statsd-client');
+	sdc = new SDC({...});
+
+function doSomethingAsync(arg, callback) {
+	callback = sdc.helpers.wrapCallback('somePrefix', callback);
+	// ... do something ...
+	return callback(null);
+}
+```
+
+The callback is overwritten with a shimmed version that counts the
+number of errors (`prefix.err`) and successes (`prefix.ok`) and
+the time of execution of the function (`prefix.time`).
+You invoked the shimmed callback exactly the same way as though
+there was no shim at all. Yes, you get metrics for your function in
+a single line of code.
+
+Note that the start of execution time is marked as soon as you
+invoke `sdc.helpers.wrapCallback()`.
+
+You can also provide more options:
+
+```javascript
+sdc.helpers.wrapCallback('somePrefix', callback, {
+	tags: { foo: 'bar' }
+});
+```
+
 ### Stopping gracefully
 
 By default, the socket is closed if it hasn't been used for a second (see

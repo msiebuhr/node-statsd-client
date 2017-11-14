@@ -161,4 +161,57 @@ describe('Helpers', function () {
         });
       });
     });
+
+    it('.wrapCallback(prefix, callback, options) → function', function () {
+      var callback = function () {};
+      var f = c.helpers.wrapCallback('prefix', callback);
+      assert.isFunction(f);
+    });
+
+    describe('wrapped callback', function () {
+      var sandbox;
+      beforeEach(function () {
+        sandbox = sinon.sandbox.create();
+        sandbox.useFakeTimers(new Date().valueOf(), 'Date');
+      });
+
+      afterEach(function () {
+        sandbox.restore();
+      });
+
+      it('invokes original callback', function (done) {
+        var e = new Error('test'), v = 20;
+        var callback = function (arg1, arg2) {
+          assert.strictEqual(arg1, e);
+          assert.strictEqual(arg2, v);
+          return done();
+        };
+        var f = c.helpers.wrapCallback('prefix', callback);
+        f(e, v);
+      });
+
+      describe('sends metrics', function () {
+        var callback = function () {};
+        var f;
+        before(function () {
+          f = c.helpers.wrapCallback('callback', callback, {
+            tags: { foo: 'bar' }
+          });
+          f();
+        });
+
+        it('sends timing', function (done) {
+          s.expectMessage('callback.time:0|ms|#foo:bar', done);
+        });
+
+        it('counts errors', function (done) {
+          f(new Error('test'));
+          s.expectMessage('callback.err:1|c|#foo:bar', done);
+        });
+
+        it('counts successes', function (done) {
+          s.expectMessage('callback.ok:1|c|#foo:bar', done);
+        });
+      });
+    });
 });
