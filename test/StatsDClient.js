@@ -102,6 +102,11 @@ describe('StatsDClient', function () {
             c.histogram('foo', 10);
             s.expectMessage('foo:10|h', done);
         });
+
+        it('.histogram("foo", 10, {}, "@0.1") ~→ "foo:10|h|@0.1"', function (done) {
+            c.histogram('foo', 10, {}, '@0.1');
+            s.expectMessage('foo:10|h|@0.1', done);
+        });
     });
 
     describe('Timers', function () {
@@ -129,6 +134,11 @@ describe('StatsDClient', function () {
                     s.expectMessage(sentMessages[0], done);
                 }, 10);
             }, 20);
+        });
+
+        it('.timing("foo", 10, {}, "@0.1") ~→ "foo:10|ms|@0.1"', function (done) {
+            c.timing('foo', 10, {}, '@0.1');
+            s.expectMessage('foo:10|ms|@0.1', done);
         });
     });
 

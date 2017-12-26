@@ -102,6 +102,15 @@ And don't let the name (or nifty interface) fool you - it can measure any kind
 of number, where you want to see the distribution (content lengths, list items,
 query sizes, ...)
 
+Some implementations may require the rate to be explicitly sent for `timing`
+(and `histograms`). By default no rate is set, but custom values can be sent.
+It is the user's responsibility to control the actual rate.
+
+```javascript
+var start = new Date();
+sdc.timing('random.timeout', start, { tag: 'value' }, '@0.1');
+```
+
 ### Histogram
 
 Many implementations (though not the official one from Etsy) support
