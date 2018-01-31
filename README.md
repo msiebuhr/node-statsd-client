@@ -243,6 +243,13 @@ What's broken
 
 Check the [GitHub issues](https://github.com/msiebuhr/node-statsd-client/issues).
 
+Other resources
+---------------
+
+ * [statsd-tail](https://github.com/msiebuhr/statsd-tail) - A simple program to grab statsd-data on localhost
+ * [hot-shots](https://www.npmjs.com/package/hot-shots) - Another popular statsd client for Node.js
+ * [statsd](https://github.com/etsy/statsd) - The canonical server
+
 LICENSE
 -------
 
