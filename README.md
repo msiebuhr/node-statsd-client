@@ -43,6 +43,7 @@ Global options:
 UDP options:
  * `host`: Where to send the stats (default `localhost`).
  * `port`: Port to contact the statsd-daemon on (default `8125`).
+ * `ipv6`: Use IPv6 instead of IPv4 (default `false`).
 
 TCP options:
  * `host`: Where to send the stats (default `localhost`).
