@@ -1,6 +1,6 @@
 /* A small fake UDP-server.
  */
-function MessageCollector(options) {
+function MessageCollector() {
     this._packetsReceived = [];
     this._expectedPackets = [];
 }

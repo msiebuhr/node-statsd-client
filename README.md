@@ -28,12 +28,11 @@ API
 
 ```javascript
 var SDC = require('statsd-client'),
-	sdc = new SDC({host: 'statsd.example.com', port: 8124, debug: true});
+	sdc = new SDC({host: 'statsd.example.com', port: 8124});
 ```
 
 Global options:
  * `prefix`: Prefix all stats with this value (default `""`).
- * `debug`: Print what is being sent to stderr (default `false`).
  * `tcp`: User specifically wants to use tcp (default `false`).
  * `socketTimeout`: Dual-use timer. Will flush metrics every interval. For UDP,
    it auto-closes the socket after this long without activity (default 1000 ms;
@@ -54,6 +53,8 @@ HTTP options:
  * `host`: The URL to send metrics to (default: `http://localhost`).
  * `headers`: Additional headers to send (default `{}`)
  * `method`: What HTTP method to use (default `PUT`)
+
+To debug, set the environment variable `NODE_DEBUG=statsd-client` when running your program.
 
 ### Counting stuff
 

@@ -17,7 +17,7 @@ FakeServer.prototype.start = function (cb) {
     var that = this;
     this._socket = dgram.createSocket('udp4');
 
-    this._socket.on('message', function (msg, rinfo) {
+    this._socket.on('message', function (msg/*, rinfo*/) {
         //console.warn("Server got: '" + msg.toString() + "'");
         msg.toString().split("\n").forEach(function (part) {
             that._packetsReceived.push(part);

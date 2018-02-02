@@ -1,5 +1,5 @@
 var sdc = require('../lib/statsd-client'),
-    SDC = new sdc({host: '10.111.12.113', debug: 1, prefix: "statsd-client"}),
+    SDC = new sdc({host: '10.111.12.113', prefix: "statsd-client"}),
     SDCTest = SDC.getChildClient('test');
 
 

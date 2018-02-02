@@ -51,7 +51,7 @@ describe('HttpSocket', function () {
 
         withoutBuffer.send('do_not_buffer');
 
-        messages.expectMessage('do_not_buffer', function (err) {
+        messages.expectMessage('do_not_buffer', function () {
             assert.closeTo(Date.now() - start, 0, 25);
             withoutBuffer.close();
             done();
@@ -76,7 +76,6 @@ describe('HttpSocket', function () {
         withHeaders.send('no heders kthxbai');
         messages.expectMessage('no heders kthxbai', function (err) {
             assert.isNotNull(lastHeaders);
-            console.error(lastHeaders);
             assert.equal(lastHeaders['x-test'], 'Test');
             withHeaders.close();
             done(err);
