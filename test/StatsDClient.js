@@ -133,7 +133,7 @@ describe('StatsDClient', function () {
     });
 
     describe('Tags', function () {
-        it('.histogram("foo", 10) with global tags {"test":"tag","other":"tag"} → "foo:10|h|#test:tag,other:tag"', function (done) {
+        it('.histogram("foo", 10) with global tags {"test":"tag","other":"tag"} → "foo:10|h|#other:tag,test:tag"', function (done) {
             new StatsDClient({
                 maxBufferSize: 0,
                 tags: {
@@ -141,16 +141,16 @@ describe('StatsDClient', function () {
                     other: 'tag'
                 }
             }).histogram('foo', 10);
-            s.expectMessage('foo:10|h|#test:tag,other:tag', done);
+            s.expectMessage('foo:10|h|#other:tag,test:tag', done);
         });
 
-        it('.histogram("foo", 10) with metric tags {"test":"tag","other":"tag"} → "foo:10|h|#test:tag,other:tag"', function (done) {
+        it('.histogram("foo", 10) with metric tags {"test":"tag","other":"tag"} → "foo:10|h|#other:tag,test:tag"', function (done) {
             c.histogram('foo', 10, { test: 'tag', other: 'tag'});
-            s.expectMessage('foo:10|h|#test:tag,other:tag', done);
+            s.expectMessage('foo:10|h|#other:tag,test:tag', done);
         });
 
         describe('metrics tags overwrite global tags', function () {
-            it('.gauge("foo", 10, {tags}) with global tags → "foo:10|g|#global:tag,other:metric,metric:tag"', function (done) {
+            it('.gauge("foo", 10, {tags}) with global tags → "foo:10|g|#global:tag,metric:tag,other:metric"', function (done) {
                 new StatsDClient({
                     maxBufferSize: 0,
                     tags: {
@@ -158,7 +158,7 @@ describe('StatsDClient', function () {
                         other: 'tag'
                     }
                 }).gauge('foo', 10, {other: 'metric', metric: 'tag'});
-                s.expectMessage('foo:10|g|#global:tag,other:metric,metric:tag', done);
+                s.expectMessage('foo:10|g|#global:tag,metric:tag,other:metric', done);
             });
         });
     });
