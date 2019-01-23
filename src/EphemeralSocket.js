@@ -106,6 +106,7 @@ EphemeralSocket.prototype._createSocket = function _createSocket(callback) {
         return callback();
     }
 
+    // @ts-ignore
     this._socket = dgram.createSocket(this._sockettype);
 
     // Listen on 'error'-events, so they don't bubble up to the main

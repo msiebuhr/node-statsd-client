@@ -2,8 +2,11 @@
 
 all: lint test
 
-test:
+src: lib/*
+	./node_modules/.bin/tsc
+
+test: src/
 	./node_modules/.bin/mocha -R spec
 
-lint:
+lint: src/
 	./node_modules/.bin/jshint lib/ test/

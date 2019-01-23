@@ -107,7 +107,7 @@ StatsDClient.prototype.decrement = function decrement(name, delta, tags) {
  */
 StatsDClient.prototype.timing = function timing(name, time, tags) {
     // Date-object or integer?
-    var t = time instanceof Date ? new Date() - time : time;
+    var t = time instanceof Date ? (Date.now() - time.getTime()) : time;
 
     this._socket.send(this.options.prefix + name + ":" + t + "|ms" + this.formatTags(tags));
 

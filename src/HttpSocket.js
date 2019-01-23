@@ -1,4 +1,5 @@
 var http = require('http');
+var https = require('https');
 var urlParse = require('url').parse;
 var debug = require('util').debuglog('statsd-client');
 
@@ -13,8 +14,9 @@ function HttpSocket(options) {
     this._socketTimeoutMsec = 'socketTimeout' in options ? options.socketTimeout : 1000;
 
     // Require the correct HTTP library
+    this._http = http;
     if (this._requestOptions.protocol === 'https:') {
-        http = require('https');
+        this._http = https;
     }
 
     this._maxBufferSize = 'maxBufferSize' in options ? options.maxBufferSize : 10000;
@@ -111,7 +113,7 @@ HttpSocket.prototype.send = function send(data) {
  */
 HttpSocket.prototype._send = function _send(data) {
     debug("_send(", data, ")");
-    var req = http.request(this._requestOptions);
+    var req = this._http.request(this._requestOptions);
 
     // Catch but ignore errors
     req.once('error', function () {});

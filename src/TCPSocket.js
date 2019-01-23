@@ -113,9 +113,7 @@ TCPSocket.prototype._createSocket = function _createSocket(callback) {
         return callback();
     }
 
-    this._socket = net.Socket({
-        type: 'tcp4'
-    });
+    this._socket = new net.Socket({});
 
 
     // Listen on 'error'-events, so they don't bubble up to the main
