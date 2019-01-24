@@ -1,9 +1,8 @@
 {
     "compilerOptions": {
     "module": "commonjs",
-        "allowJs": true,
+        "declaration": true,
         "downlevelIteration": true, // Allow for .. of loops on sets
-        "checkJs": true,
         "lib": ["es2017"],
         "outDir": "lib",
         "target": "es5"
