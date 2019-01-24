@@ -1,6 +1,8 @@
 
+import statsdClient = require('../statsd-client');
+
 // Removes ":", heading/trailing / and replaces / by _ in a given route name
-function sanitize(routeName) {
+function sanitize(routeName: string) {
     return routeName.replace(/:/g, "").replace(/^\/|\/$/g, "").replace(/\//g, "_");
 }
 
@@ -41,8 +43,8 @@ function findRouteName(req, res) {
  *  * Add a `function(client, startTime, req, res)` in `onResponseEnd` that
  *    will be called at the very end.
  */
-function factory(parentClient) {
-    return function (prefix, options) {
+function factory(parentClient: statsdClient) {
+    return function (prefix: string, options?: any) {
         options = options || {};
 
         var client = parentClient.getChildClient(prefix || '');
@@ -80,4 +82,4 @@ function factory(parentClient) {
     };
 }
 
-module.exports = factory;
+export = factory;

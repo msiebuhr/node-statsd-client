@@ -3,8 +3,10 @@
  * once it is invoked. The returned function is to be used
  * exactly the same way as the original callback.
  */
-function factory(parentClient) {
-    return function (prefix, callback, options) {
+import statsdClient = require('../statsd-client');
+
+function factory(parentClient: statsdClient) {
+    return function (prefix: string, callback: Function , options?: {tags?: {[key:string]: string}}) {
         options = options || {};
 
         var client = parentClient.getChildClient(prefix);
@@ -23,4 +25,4 @@ function factory(parentClient) {
     };
 }
 
-module.exports = factory;
+export = factory;
