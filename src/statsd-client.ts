@@ -59,7 +59,7 @@ class StatsDClient {
     /*
      * gauge(name, value, tags)
      */
-    gauge(name:string, value:number, tags?:Tags) {
+    gauge(name:string, value:number, tags?:Tags): StatsDClient {
         this._socket.send(this.options.prefix + name + ":" + value + "|g" + this.formatTags(tags));
 
         return this;
@@ -68,7 +68,7 @@ class StatsDClient {
     /*
      * gaugeDelta(name, delta, tags)
      */
-    gaugeDelta(name:string, delta:number, tags?:Tags) {
+    gaugeDelta(name:string, delta:number, tags?:Tags): StatsDClient {
         var sign = delta >= 0 ? "+" : "-";
         this._socket.send(this.options.prefix + name + ":" + sign + Math.abs(delta) + "|g" + this.formatTags(tags));
 
@@ -78,7 +78,7 @@ class StatsDClient {
     /*
      * set(name, value, tags)
      */
-    set(name, value, tags) {
+    set(name: string, value: number | string, tags?: Tags): StatsDClient {
         this._socket.send(this.options.prefix + name + ":" + value + "|s" + this.formatTags(tags));
 
         return this;
@@ -87,7 +87,7 @@ class StatsDClient {
     /*
      * counter(name, delta, tags)
      */
-    counter(name, delta, tags) {
+    counter(name: string, delta: number, tags?: Tags): StatsDClient {
         this._socket.send(this.options.prefix + name + ":" + delta + "|c" + this.formatTags(tags));
 
         return this;
@@ -96,7 +96,7 @@ class StatsDClient {
     /*
      * increment(name, [delta=1], tags)
      */
-    increment(name, delta, tags) {
+    increment(name: string, delta?: number, tags?: Tags): StatsDClient {
         this.counter(name, Math.abs(delta === undefined ? 1 : delta), tags);
 
         return this;
@@ -105,7 +105,7 @@ class StatsDClient {
     /*
      * decrement(name, [delta=-1], tags)
      */
-    decrement(name, delta, tags) {
+    decrement(name: string, delta?: number, tags?: Tags): StatsDClient {
         this.counter(name, -1 * Math.abs(delta === undefined ? 1 : delta), tags);
 
         return this;
@@ -114,7 +114,7 @@ class StatsDClient {
     /*
      * timing(name, date-object | ms, tags)
      */
-    timing(name, time, tags) {
+    timing(name: string, time: Date | number, tags?: Tags): StatsDClient {
         // Date-object or integer?
         var t = time instanceof Date ? (Date.now() - time.getTime()) : time;
 
@@ -126,7 +126,7 @@ class StatsDClient {
     /*
      * histogram(name, value, tags)
      */
-    histogram(name, value, tags) {
+    histogram(name: string, value: number, tags?: Tags): StatsDClient {
         this._socket.send(this.options.prefix + name + ":" + value + "|h" + this.formatTags(tags));
 
         return this;
@@ -135,7 +135,7 @@ class StatsDClient {
     /*
      * formatTags(tags)
      */
-    formatTags(metric_tags) {
+    formatTags(metric_tags: Tags): string {
         var tags = {};
 
         // Merge global tags and metric tags.
@@ -156,7 +156,7 @@ class StatsDClient {
      * Send raw data to the underlying socket. Useful for dealing with custom
      * statsd-extensions in a pinch.
      */
-    raw(rawData) {
+    raw(rawData: string): StatsDClient {
         this._socket.send(rawData);
 
         return this;
@@ -165,7 +165,7 @@ class StatsDClient {
     /*
      * Close the socket, if in use and cancel the interval-check, if running.
      */
-    close() {
+    close(): StatsDClient {
         this._socket.close();
 
         return this;
