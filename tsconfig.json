@@ -1,0 +1,21 @@
+{
+    "compilerOptions": {
+    "module": "commonjs",
+        "allowJs": true,
+        "downlevelIteration": true, // Allow for .. of loops on sets
+        "checkJs": true,
+        "lib": ["es2017"],
+        "outDir": "lib",
+        "target": "es5"
+        //"resolveJsonModule": true,
+    },
+    "include": [
+        "src",
+    ],
+    "exclude": [
+        "./node_modules"
+    ],
+    "typeAcquisition": {
+        "enable": true
+    }
+}
