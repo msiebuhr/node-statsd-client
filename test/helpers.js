@@ -41,13 +41,17 @@ describe('Helpers', function () {
         });
 
         // Routes defined on the a subrouter or "micro-app".
-        var router = express.Router();
+        var router = express.Router({ mergeParams: true });
 
         router.get('/foo', function (req, res) {
             res.sendStatus(200);
         });
 
-        app.use('/subrouter', router);
+        router.get('/foo/:subparam', function (req, res) {
+            res.sendStatus(200);
+        });
+
+        app.use('/subrouter/:param', router);
 
         es = app.listen(3000, function () {
             baseUrl = 'http://localhost:' + 3000;
@@ -136,13 +140,23 @@ describe('Helpers', function () {
             });
 
             describe('sub-router', function () {
-                it('/subrouter/foo → "GET_subrouter_foo"', function (done) {
+                it('/subrouter/:param/foo → "GET_subrouter_param_foo"', function (done) {
                     supertest(baseUrl)
-                        .get('/subrouter/foo')
+                        .get('/subrouter/test/foo')
                         .expect(200)
                         .end(function (err/*, res*/) {
                             if (err) return done(err);
-                            s.expectMessage('express.response_time.GET_subrouter_foo:0|ms', done);
+                            s.expectMessage('express.response_time.GET_subrouter_param_foo:0|ms', done);
+                        });
+                });
+
+                it('/subrouter/:param/foo/:subparam → "GET_subrouter_param_foo_subparam"', function (done) {
+                    supertest(baseUrl)
+                        .get('/subrouter/test_param/foo/test_sub_param')
+                        .expect(200)
+                        .end(function (err/*, res*/) {
+                            if (err) return done(err);
+                            s.expectMessage('express.response_time.GET_subrouter_param_foo_subparam:0|ms', done);
                         });
                 });
             });
