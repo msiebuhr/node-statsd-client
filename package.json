@@ -30,5 +30,10 @@
     "test": "mocha -R spec && eslint ."
   },
   "license": "MIT",
+  "files": [
+    "REAMDE.md",
+    "lib/",
+    "examples/"
+  ],
   "optionalDependencies": {}
 }
