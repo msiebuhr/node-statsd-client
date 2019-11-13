@@ -252,6 +252,11 @@ Other resources
  * [hot-shots](https://www.npmjs.com/package/hot-shots) - Another popular statsd client for Node.js
  * [statsd](https://github.com/etsy/statsd) - The canonical server
 
+RELEASES
+--------
+
+See the [changelog](CHANGELOG.md).
+
 LICENSE
 -------
 
