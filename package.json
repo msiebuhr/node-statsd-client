@@ -28,7 +28,8 @@
     "supertest": "^1.2.0"
   },
   "scripts": {
-    "test": "mocha -R spec && eslint ."
+    "test": "mocha -R spec && eslint .",
+    "preversion": "offline-github-changelog --next=${npm_package_version} > CHANGELOG.md && git add CHANGELOG.md"
   },
   "license": "MIT",
   "files": [
