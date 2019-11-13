@@ -23,6 +23,7 @@
     "eslint": "^4.16.0",
     "express": "^4.13.4",
     "mocha": "~1.6.0",
+    "offline-github-changelog": "^1.6.1",
     "sinon": "^1.17.3",
     "supertest": "^1.2.0"
   },
