@@ -1,3 +1,13 @@
+### v0.4.5 (2020-07-08)
+
+#### Pull requests
+
+- [#85](https://github.com/msiebuhr/node-statsd-client/pull/85) Add automatically generated changelog ([Andreas Lind](mailto:andreas.lind@peakon.com))
+
+#### Commits to master
+
+- [TCPSocket: Fix spelling \(\#86\)](https://github.com/msiebuhr/node-statsd-client/commit/b230cec5d688c7b84feca4760013be495e3f84e6) ([Morten Siebuhr](mailto:sbhr@sbhr.dk))
+
 ### v0.4.4 (2019-09-26)
 
 - [Package: Don't include test\/infrastructure files in NPM pakcage](https://github.com/msiebuhr/node-statsd-client/commit/68e8b91a57fdd5275df0a11e835dfbdb69257dd3) ([Morten Siebuhr](mailto:sbhr@sbhr.dk))
