@@ -1,7 +1,3 @@
-### v0.4.6 (2021-04-19)
-
-- update usage of Buffer
-
 ### v0.4.5 (2020-07-08)
 
 #### Pull requests
