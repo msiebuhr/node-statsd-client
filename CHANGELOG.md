@@ -1,7 +1,9 @@
-### v0.4.5 (2020-07-08)
+### v0.4.6 (2021-04-22)
 
 #### Pull requests
 
+- [#91](https://github.com/msiebuhr/node-statsd-client/pull/91) update use of Buffer ([khuang](mailto:khuang@havenlife.com))
+- [#87](https://github.com/msiebuhr/node-statsd-client/pull/87) Bump lodash from 4.17.11 to 4.17.19 ([dependabot[bot]](mailto:49699333+dependabot[bot]@users.noreply.github.com))
 - [#85](https://github.com/msiebuhr/node-statsd-client/pull/85) Add automatically generated changelog ([Andreas Lind](mailto:andreas.lind@peakon.com))
 
 #### Commits to master
