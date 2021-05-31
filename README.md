@@ -113,9 +113,9 @@ with handling dates, this is much the same as `.timing()`.
 
 ### Distribution
 
-Datadog's specific implementation supports another extra alternative to timers,
-called the [distribution metric type](https://docs.datadoghq.com/developers/metrics/types/?tab=distribution#metric-types)
-this is pretty much an alias to histograms and can be used via `.distribution()`.
+Datadog's specific implementation supports another alternative to timers/histograms,
+called the [distribution metric type](https://docs.datadoghq.com/metrics/distributions/).
+From the client's perspective, this is pretty much an alias to histograms and can be used via `.distribution()`.
 
 ### Raw
 
