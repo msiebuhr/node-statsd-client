@@ -104,6 +104,13 @@ describe('StatsDClient', function () {
         });
     });
 
+    describe('Distributions', function () {
+        it('.distribution("foo", 10) → "foo:10|d', function (done) {
+            c.distribution('foo', 10);
+            s.expectMessage('foo:10|d', done);
+        });
+    });
+
     describe('Timers', function () {
         it('.timing("foo", 10) → "foo:10|ms', function (done) {
             c.timing('foo', 10);
@@ -147,6 +154,22 @@ describe('StatsDClient', function () {
         it('.histogram("foo", 10) with metric tags {"test":"tag","other":"tag"} → "foo:10|h|#test:tag,other:tag"', function (done) {
             c.histogram('foo', 10, { test: 'tag', other: 'tag'});
             s.expectMessage('foo:10|h|#test:tag,other:tag', done);
+        });
+
+        it('.distribution("foo", 10) with global tags {"test":"tag","other":"tag"} → "foo:10|d|#test:tag,other:tag"', function (done) {
+            new StatsDClient({
+                maxBufferSize: 0,
+                tags: {
+                    test: 'tag',
+                    other: 'tag'
+                }
+            }).distribution('foo', 10);
+            s.expectMessage('foo:10|d|#test:tag,other:tag', done);
+        });
+
+        it('.distribution("foo", 10) with metric tags {"test":"tag","other":"tag"} → "foo:10|d|#test:tag,other:tag"', function (done) {
+            c.distribution('foo', 10, { test: 'tag', other: 'tag'});
+            s.expectMessage('foo:10|d|#test:tag,other:tag', done);
         });
 
         describe('metrics tags overwrite global tags', function () {
@@ -201,6 +224,10 @@ describe('StatsDClient', function () {
 
         it('.histogram() chains', function() {
             assert.equal(c, c.histogram('x', 'y'));
+        });
+
+        it('.distribution() chains', function() {
+            assert.equal(c, c.distribution('x', 'y'));
         });
 
         it('.raw() chains', function () {
