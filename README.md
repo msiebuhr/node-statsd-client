@@ -17,6 +17,7 @@ sdc.increment('some.counter'); // Increment by one.
 sdc.gauge('some.gauge', 10); // Set gauge to 10
 sdc.timing('some.timer', timer); // Calculates time diff
 sdc.histogram('some.histogram', 10, {foo: 'bar'}) // Histogram with tags
+sdc.distribution('some.distribution', 10, {foo: 'bar'}) // Distribution with tags
 
 sdc.close(); // Optional - stop NOW
 ```
@@ -110,6 +111,11 @@ Many implementations (though not the official one from Etsy) support
 histograms as an alias/alternative for timers. So aside from the fancy bits
 with handling dates, this is much the same as `.timing()`.
 
+### Distribution
+
+Datadog's specific implementation supports another alternative to timers/histograms,
+called the [distribution metric type](https://docs.datadoghq.com/metrics/distributions/).
+From the client's perspective, this is pretty much an alias to histograms and can be used via `.distribution()`.
 
 ### Raw
 
