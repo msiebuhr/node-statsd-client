@@ -1,3 +1,9 @@
+### v0.4.7 (2021-06-03)
+
+- [#94](https://github.com/msiebuhr/node-statsd-client/pull/94) feat\(distribution\): add support for datadog's distribution metric ([JGAntunes](mailto:joao@netlify.com))
+- [#93](https://github.com/msiebuhr/node-statsd-client/pull/93) Bump hosted-git-info from 2.8.5 to 2.8.9 ([dependabot[bot]](mailto:49699333+dependabot[bot]@users.noreply.github.com))
+- [#92](https://github.com/msiebuhr/node-statsd-client/pull/92) Bump lodash from 4.17.19 to 4.17.21 ([dependabot[bot]](mailto:49699333+dependabot[bot]@users.noreply.github.com))
+
 ### v0.4.6 (2021-04-22)
 
 #### Pull requests
