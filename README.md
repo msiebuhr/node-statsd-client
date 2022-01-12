@@ -1,5 +1,7 @@
-node-statsd-client
-==================
+DEPRECATED node-statsd-client
+=============================
+
+> This module is no longer maintained - please use alternative libraries, such as [hot-shots](https://www.npmjs.com/package/hot-shots).
 
 Node.js client for [statsd](https://github.com/etsy/statsd).
 
